@@ -7,7 +7,8 @@
 const MAX_CELLS = 4000000;
 
 export function tokenize( text ) {
-    return String( text || '' ).match( /\s+|[^\s]+/g ) || [];
+    // a placeholder token (⟦E1⟧) is a word of its own, also when text touches it
+    return String( text || '' ).match( /\u27E6[A-Z]\d+\u27E7|\s+|[^\s\u27E6]+|\u27E6/g ) || [];
 }
 
 /**

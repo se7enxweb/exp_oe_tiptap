@@ -296,6 +296,11 @@ html.exp-oe-has-fullscreen, html.exp-oe-has-fullscreen body { overflow: hidden; 
 .exp-oe-ai-loading::before { content: ""; display: inline-block; width: 10px; height: 10px; margin-right: 6px; border: 2px solid #9db6d6; border-top-color: transparent; border-radius: 50%; animation: exp-oe-spin 1s linear infinite; vertical-align: -1px; }
 .exp-oe-ai-error { color: #900; }
 .exp-oe-ai-warning { margin: 6px 0 0; padding: 3px 6px; background: #fff3cd; color: #6b4e00; }
+.exp-oe-ai-note { margin: 6px 0 0; color: var(--exp-oe-muted); }
+.exp-oe-ai-chip { display: inline-block; margin: 0 1px; padding: 0 5px; border: 1px solid #9db6d6; border-radius: 8px; background: #e8f0fb; color: #23466e; font-size: 10px; line-height: 14px; white-space: nowrap; vertical-align: 1px; }
+.exp-oe-ai-preview del .exp-oe-ai-chip { border-color: #c77; background: #fbe4e4; color: #800; text-decoration: line-through; }
+.exp-oe-ai-preview ins .exp-oe-ai-chip { border-style: dashed; }
+.exp-oe-ai-chip-unknown { border-color: #c90; background: #fff3cd; color: #6b4e00; }
 .exp-oe-ai-model { margin: 4px 0 0; color: var(--exp-oe-muted); font-size: 10px; }
 @keyframes exp-oe-spin { to { transform: rotate(360deg); } }
 @media (prefers-reduced-motion: reduce) { .exp-oe-ai-loading::before { animation: none; } }

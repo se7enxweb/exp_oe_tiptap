@@ -7,7 +7,10 @@
  *   ezjscServer_function_arguments = expoetiptap::ai
  *   ezxform_token  the form token
  *   command        improve | shorten | extend | fix_spelling | translate | summarise | continue | <custom>
- *   text           the input (selection or whole document) as plain text
+ *   text           the input (selection or whole document): plain text, or with format=markup the structure
+ *                  keeping markup of src/js/ai/structure.js (text, simple tags and placeholder tokens)
+ *   format         text (default) | markup
+ *   strict         1 for the second, stricter try after an answer that lost placeholders
  *   language       target language for translate (e.g. "de" or "German")
  *   locale         the editor's locale, the language to answer in for the other commands
  * Response (ezjscore JSON): { error_text, content: { text, command, model } }
@@ -64,6 +67,10 @@ export class AIClient {
         body.append( 'text', text );
         if ( request.language )
             body.append( 'language', request.language );
+        if ( request.format )
+            body.append( 'format', request.format );
+        if ( request.strict )
+            body.append( 'strict', '1' );
         if ( o.locale )
             body.append( 'locale', o.locale );
         const url = String( o.ezjscoreUrl || '/ezjscore/' ).replace( /\/?$/, '/' ) + 'call';

@@ -1,16 +1,39 @@
 /**
  * The AI assistant of the editor: a menu of commands on the toolbar button and a suggestion panel
  * under the toolbar. The input is the selection, or the whole document when nothing is selected.
- * The answer is shown as a suggestion (word diff for rewriting commands, the new text for summarise
- * and continue); the editor stays read-only until it is accepted or rejected, so the range the
+ *
+ * The input is sent as structure keeping markup (src/js/ai/structure.js): text with simple tags and
+ * placeholder tokens for everything that is not text. The answer is checked (every token back exactly
+ * once, every link kept), rebuilt with the original nodes and shown as a word diff with the items as
+ * chips. The editor stays read-only until the suggestion is accepted or rejected, so the range the
  * suggestion replaces cannot move.
+ *
+ * Commands that rewrite (improve, shorten, extend, fix spelling, translate, custom commands) replace
+ * the input and must keep every item. Summarise and continue add new text next to the input, which
+ * stays as it is; their answer holds no items.
  */
+import { Fragment } from '@tiptap/pm/model';
 import { h, clear } from './dom.js';
-import { AIClient, BUILTIN_COMMANDS, COMMAND_LABELS, textToParagraphs } from '../ai/client.js';
+import { AIClient, BUILTIN_COMMANDS, COMMAND_LABELS } from '../ai/client.js';
 import { diffWords } from '../ai/diff.js';
+import { serialize, validate, rebuild, sliceLike, displayText, stripTokens, TOKEN_RE } from '../ai/structure.js';
 
 const INSERT_COMMANDS = { summarise: true, continue: true };
 const CONTINUE_CONTEXT = 4000;
+const CHIP_SPLIT = /(⟦[A-Z]\d+⟧)/;
+
+/** texts translated at run time (chip labels of the items, input errors); listed here for strings.json */
+const TEXTS = {
+    image: 'Image',
+    object: 'Object',
+    inlineObject: 'Inline object',
+    customTag: 'Custom tag',
+    anchor: 'Anchor',
+    table: 'Table',
+    literal: 'Literal',
+    noText: 'There is no text to work on',
+    cellSelection: 'Select text inside one table cell, or text outside the table.'
+};
 
 const LANGUAGES = [
     [ 'en', 'English' ], [ 'de', 'German' ], [ 'fr', 'French' ], [ 'es', 'Spanish' ], [ 'it', 'Italian' ],
@@ -94,25 +117,32 @@ export class AIPanel {
 
     // ------------------------------------------------------------ input
 
-    /** { text, from, to, whole, inline, insertAt } of what the command works on */
+    /**
+     * What the command works on: { text (markup), map, from, to, whole, inline, parent, slice, insertAt }
+     * or { error }.
+     */
     input( command ) {
         const { editor } = this.ctx, { state } = editor, sel = state.selection;
         if ( command === 'continue' ) {
             const at = sel.empty ? sel.from : sel.to;
-            const before = state.doc.textBetween( 0, at, '\n\n', ' ' );
-            return { text: before.slice( -CONTINUE_CONTEXT ), from: at, to: at, whole: false, inline: true, insertAt: at };
+            const { markup, map } = serialize( { mode: 'blocks', content: state.doc.slice( 0, at ).content } );
+            return { text: tail( markup, CONTINUE_CONTEXT ), map, from: at, to: at, whole: false, inline: true, insertAt: at };
         }
         if ( !sel.empty ) {
-            const inline = sel.$from.sameParent( sel.$to ) && sel.$from.parent.isTextblock;
-            return { text: state.doc.textBetween( sel.from, sel.to, '\n\n', ' ' ), from: sel.from, to: sel.to, whole: false, inline };
+            if ( sel.$anchorCell )
+                return { error: TEXTS.cellSelection };
+            if ( sel.$from.sameParent( sel.$to ) && sel.$from.parent.isTextblock ) {
+                const parent = sel.$from.parent;
+                const { markup, map } = serialize( { mode: 'inline', parent, content: parent.content.cut( sel.$from.parentOffset, sel.$to.parentOffset ) } );
+                return { text: markup, map, from: sel.from, to: sel.to, whole: false, inline: true, parent };
+            }
+            const slice = state.doc.slice( sel.from, sel.to );
+            const { markup, map } = serialize( { mode: 'blocks', content: slice.content } );
+            return { text: markup, map, from: sel.from, to: sel.to, whole: false, inline: false, slice };
         }
-        let rich = false;
-        state.doc.descendants( ( node ) => {
-            if ( node.isAtom || node.type.spec.tableRole || /custom|embed|list/i.test( node.type.name ) )
-                rich = true;
-            return !rich;
-        } );
-        return { text: state.doc.textBetween( 0, state.doc.content.size, '\n\n', ' ' ), from: 0, to: state.doc.content.size, whole: true, inline: false, rich };
+        const slice = state.doc.slice( 0, state.doc.content.size );
+        const { markup, map } = serialize( { mode: 'blocks', content: slice.content } );
+        return { text: markup, map, from: 0, to: state.doc.content.size, whole: true, inline: false, slice };
     }
 
     // ------------------------------------------------------------ run and preview
@@ -122,19 +152,39 @@ export class AIPanel {
             return this.askLanguage();
         const input = this.input( command );
         this.lock( true );
-        this.pending = { command, language, input, result: null };
+        this.pending = { command, language, input, result: null, retried: false };
+        if ( !input.error && command !== 'continue' && !displayText( stripTokens( input.text ) ).trim() )
+            input.error = TEXTS.noText;
+        if ( input.error ) {
+            this.pending.error = this.ctx.t( input.error );
+            this.render( 'error' );
+            return Promise.resolve();
+        }
         this.render( 'loading' );
-        return this.client.run( { command, text: input.text, language } ).then( ( result ) => {
-            if ( !this.pending || this.pending.command !== command )
-                return;
-            this.pending.result = result;
+        return this.ask( false );
+    }
+
+    /** one request; an answer that lost or invented items is asked for once more, with a stricter instruction */
+    ask( strict ) {
+        const p = this.pending, { command, language, input } = p;
+        return this.client.run( { command, text: input.text, language, format: 'markup', strict } ).then( ( result ) => {
+            if ( this.pending !== p )
+                return undefined;
+            const check = validate( result.text, input.map, { allowDrop: !!INSERT_COMMANDS[command] } );
+            if ( !check.ok && !p.retried ) {
+                p.retried = true;
+                return this.ask( true );
+            }
+            p.result = result;
+            p.check = check;
             this.render( 'ready' );
+            return undefined;
         }, ( e ) => {
             if ( e && e.name === 'AbortError' )
                 return;
-            if ( !this.pending )
+            if ( this.pending !== p )
                 return;
-            this.pending.error = e && e.message ? e.message : String( e );
+            p.error = e && e.message ? e.message : String( e );
             this.render( 'error' );
         } );
     }
@@ -156,6 +206,22 @@ export class AIPanel {
         choice.focus();
     }
 
+    /** text with the tokens as chips */
+    chips( parent, text, map ) {
+        for ( const piece of text.split( CHIP_SPLIT ) ) {
+            if ( !piece )
+                continue;
+            const m = /^⟦([A-Z]\d+)⟧$/.exec( piece );
+            if ( !m ) {
+                parent.appendChild( document.createTextNode( piece ) );
+                continue;
+            }
+            const token = map.tokens.get( m[1] );
+            const label = token ? this.ctx.t( token.label.replace( /:.*$/, '' ) ) + token.label.replace( /^[^:]*/, '' ) : '?';
+            parent.appendChild( h( 'span', { class: 'exp-oe-ai-chip' + ( token ? '' : ' exp-oe-ai-chip-unknown' ), 'data-token': m[1], title: label, text: label } ) );
+        }
+    }
+
     render( state ) {
         const { t } = this.ctx, p = this.pending;
         const head = h( 'div', { class: 'exp-oe-ai-head' }, [
@@ -168,25 +234,43 @@ export class AIPanel {
             return;
         }
         if ( state === 'error' ) {
-            this.show( [ head, h( 'div', { class: 'exp-oe-ai-body exp-oe-ai-error', role: 'alert', text: p.error } ),
-                         this.buttons( [ [ 'Try again', () => this.start( p.command, p.language ) ], [ 'Close', () => this.reject() ] ] ) ] );
+            const actions = p.input.error ? [] : [ [ 'Try again', () => this.start( p.command, p.language ) ] ];
+            actions.push( [ 'Close', () => this.reject() ] );
+            this.show( [ head, h( 'div', { class: 'exp-oe-ai-body exp-oe-ai-error', role: 'alert', text: p.error } ), this.buttons( actions ) ] );
             return;
         }
-        const suggestion = p.result.text;
+        const insert = !!INSERT_COMMANDS[p.command], check = p.check, map = p.input.map;
         const preview = h( 'div', { class: 'exp-oe-ai-preview', 'aria-live': 'polite' } );
-        if ( INSERT_COMMANDS[p.command] ) {
-            preview.appendChild( h( 'ins', { text: suggestion } ) );
+        if ( insert ) {
+            const ins = h( 'ins' );
+            this.chips( ins, displayText( stripTokens( p.result.text ) ), map );
+            preview.appendChild( ins );
         } else {
-            for ( const part of diffWords( p.input.text, suggestion ) )
-                preview.appendChild( part.type === 'same' ? document.createTextNode( part.text ) : h( part.type === 'add' ? 'ins' : 'del', { text: part.text } ) );
+            for ( const part of diffWords( displayText( p.input.text ), displayText( p.result.text ) ) ) {
+                const holder = part.type === 'same' ? preview : preview.appendChild( h( part.type === 'add' ? 'ins' : 'del' ) );
+                this.chips( holder, part.text, map );
+            }
         }
         const body = [ head, preview ];
-        if ( p.input.whole && p.input.rich && !INSERT_COMMANDS[p.command] )
-            body.push( h( 'div', { class: 'exp-oe-ai-warning', text: t( 'Replacing the whole document keeps only plain paragraphs: embedded objects, tables, lists and custom tags would be lost. Insert below keeps them.' ) } ) );
-        const actions = INSERT_COMMANDS[p.command]
-            ? [ [ p.command === 'continue' ? 'Insert' : 'Insert below', () => this.accept( p.command === 'continue' ? 'at' : 'below' ), true ] ]
-            : [ [ 'Accept', () => this.accept( 'replace' ), !( p.input.whole && p.input.rich ) ], [ 'Insert below', () => this.accept( 'below' ) ] ];
-        actions.push( [ 'Try again', () => this.start( p.command, p.language ) ], [ 'Reject', () => this.reject() ] );
+        const lost = check.problems;
+        if ( insert && p.command === 'summarise' && map.tokens.size )
+            body.push( h( 'div', { class: 'exp-oe-ai-note', text: t( 'A summary is text only: images, embedded objects, tables and custom tags stay in the original text.' ) } ) );
+        let actions;
+        if ( insert ) {
+            actions = [ [ p.command === 'continue' ? 'Insert' : 'Insert below', () => this.accept( p.command === 'continue' ? 'at' : 'below' ), true ] ];
+            actions.push( [ 'Try again', () => this.start( p.command, p.language ) ], [ 'Reject', () => this.reject() ] );
+        } else if ( check.ok ) {
+            if ( map.tokens.size || map.links.size )
+                body.push( h( 'div', { class: 'exp-oe-ai-note', text: t( 'All %n items (images, objects, custom tags, anchors, tables, links) are kept in place.' ).replace( '%n', String( map.tokens.size + map.links.size ) ) } ) );
+            actions = [ [ 'Accept', () => this.accept( 'replace' ), true ], [ 'Insert below', () => this.accept( 'below' ) ],
+                        [ 'Try again', () => this.start( p.command, p.language ) ], [ 'Reject', () => this.reject() ] ];
+        } else {
+            body.push( h( 'div', { class: 'exp-oe-ai-warning', role: 'alert', text: lost
+                ? t( 'The assistant changed or removed %n items (images, objects, custom tags, anchors, tables or links). Accept keeps every item: those it moved stay where it put them, missing ones are put back at the end of the new text. Insert below adds the new text without them and keeps the original.' ).replace( '%n', String( lost ) )
+                : t( 'The answer contained formatting the editor does not use; it is left out.' ) } ) );
+            actions = [ [ 'Insert below', () => this.accept( 'below' ), true ], [ 'Accept', () => this.accept( 'replace' ) ],
+                        [ 'Try again', () => this.start( p.command, p.language ) ], [ 'Keep original', () => this.reject() ] ];
+        }
         body.push( this.buttons( actions ) );
         if ( p.result.model )
             body.push( h( 'div', { class: 'exp-oe-ai-model', text: t( 'Model' ) + ': ' + p.result.model } ) );
@@ -213,26 +297,68 @@ export class AIPanel {
         this.ctx.instance.setLocked( on );
     }
 
+    /**
+     * The transaction that applies the suggestion. mode: replace | below | at
+     * Rewrites are rebuilt with the original items; an answer that failed the check is repaired (each item
+     * exactly once). Text inserted next to the input (below, at) holds no items and no links.
+     */
+    transaction( mode ) {
+        const p = this.pending, { state } = this.ctx.editor, schema = state.schema, input = p.input, answer = p.result.text;
+        const tr = state.tr;
+        if ( mode === 'at' ) {
+            const frag = rebuild( stripTokens( answer ), input.map, schema, { mode: 'blocks', tokens: false } );
+            const at = input.insertAt, $at = state.doc.resolve( at );
+            if ( frag.childCount === 1 && frag.firstChild.isTextblock && $at.parent.isTextblock ) {
+                let content = frag.firstChild.content;
+                const before = $at.parent.textBetween( 0, $at.parentOffset, '\n', ' ' );
+                const first = content.firstChild;
+                if ( before && !/\s$/.test( before ) && first && first.isText && !/^[\s.,;:!?)]/.test( first.text ) )
+                    content = Fragment.from( schema.text( ' ', first.marks ) ).append( content );
+                tr.insert( at, content );
+            } else {
+                tr.replaceRange( at, at, sliceLike( frag, { openStart: 1, openEnd: 1 } ) );
+            }
+            return tr;
+        }
+        if ( mode === 'below' ) {
+            const frag = rebuild( stripTokens( answer ), input.map, schema, { mode: 'blocks', tokens: false } );
+            const $to = state.doc.resolve( input.to );
+            const after = input.whole ? state.doc.content.size : ( $to.depth ? $to.after( 1 ) : input.to );
+            return tr.insert( after, frag );
+        }
+        const repair = !p.check.ok;
+        if ( input.inline ) {
+            const frag = rebuild( answer, input.map, schema, { mode: 'inline', parent: input.parent, repair } );
+            return frag.size ? tr.replaceWith( input.from, input.to, frag ) : tr.delete( input.from, input.to );
+        }
+        const frag = rebuild( answer, input.map, schema, { mode: 'blocks', repair } );
+        if ( !frag.childCount )
+            throw new Error( 'empty answer' );
+        if ( input.whole )
+            return tr.replaceWith( 0, state.doc.content.size, frag );
+        return tr.replaceRange( input.from, input.to, sliceLike( frag, input.slice ) );
+    }
+
     /** mode: replace | below | at */
     accept( mode ) {
         const p = this.pending;
         if ( !p || !p.result )
             return;
-        const { editor } = this.ctx, text = p.result.text, input = p.input;
-        this.close();
-        const chain = editor.chain().focus();
-        if ( mode === 'at' ) {
-            const lead = /\s$/.test( input.text ) || !input.text ? '' : ' ';
-            chain.insertContentAt( input.insertAt, ( lead + text ).replace( /\n{2,}/g, '\n' ).split( '\n' ).map( escapeText ).join( '<br>' ) ).run();
-        } else if ( mode === 'below' ) {
-            const $to = editor.state.doc.resolve( input.to );
-            const after = input.whole ? editor.state.doc.content.size : ( $to.depth ? $to.after( 1 ) : input.to );
-            chain.insertContentAt( after, textToParagraphs( text ) ).run();
-        } else if ( input.inline ) {
-            chain.insertContentAt( { from: input.from, to: input.to }, text.replace( /\n{2,}/g, '\n' ).split( '\n' ).map( escapeText ).join( '<br>' ) ).run();
-        } else {
-            chain.insertContentAt( { from: input.from, to: input.to }, textToParagraphs( text ) ).run();
+        let tr = null, error = null;
+        try {
+            tr = this.transaction( mode );
+            tr.doc.check();
+        } catch ( e ) {
+            error = e;
         }
+        if ( error ) {
+            p.error = this.ctx.t( 'The suggestion could not be applied to the document. Nothing was changed.' );
+            this.render( 'error' );
+            return;
+        }
+        this.close();
+        this.ctx.editor.view.dispatch( tr.scrollIntoView() );
+        this.ctx.editor.commands.focus();
         this.ctx.instance.sync();
     }
 
@@ -255,6 +381,11 @@ export class AIPanel {
     }
 }
 
-function escapeText( s ) {
-    return s.replace( /&/g, '&amp;' ).replace( /</g, '&lt;' ).replace( />/g, '&gt;' );
+/** the end of the markup, cut at a block boundary (a line) when it is too long */
+function tail( markup, max ) {
+    if ( markup.length <= max )
+        return markup;
+    const cut = markup.slice( -max );
+    const nl = cut.indexOf( '\n' );
+    return nl !== -1 && nl < cut.length - 1 ? cut.slice( nl + 1 ) : cut.replace( TOKEN_RE, '' );
 }

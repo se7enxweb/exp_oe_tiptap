@@ -136,7 +136,8 @@ test( 'continue writing inserts at the cursor with the text before it as context
     await inst.ai.start( 'continue' );
     await tick();
     assert.equal( calls[0].body.get( 'command' ), 'continue' );
-    assert.equal( calls[0].body.get( 'text' ), 'Once upon a time' );
+    assert.equal( calls[0].body.get( 'text' ), '<p>Once upon a time</p>', 'the context is sent as markup' );
+    assert.equal( calls[0].body.get( 'format' ), 'markup' );
     inst.wrapper.querySelector( '[data-action="Insert"]' ).click();
     assert.equal( t.value, '<p>Once upon a time there was a CMS.</p>' );
 } );
@@ -155,14 +156,19 @@ test( 'translate asks for the target language and sends it', async () => {
     assert.equal( calls[0].body.get( 'language' ), 'fr' );
 } );
 
-test( 'whole document with embeds or tables warns before replacing', async () => {
-    const { inst } = editorWith( '<p>Text</p><table><tbody><tr><td><p>c</p></td></tr></tbody></table>', fakeFetch( { content: { text: 'New text' } }, [] ) );
+test( 'whole document with a table: the table is kept as a placeholder, Accept is the default', async () => {
+    const calls = [];
+    const { t, inst } = editorWith( '<p>Text</p><table><tbody><tr><td><p>c</p></td></tr></tbody></table>',
+        fakeFetch( ( body ) => ( { content: { text: body.get( 'text' ).replace( 'Text', 'New text' ) } } ), calls ) );
     inst.editor.commands.setTextSelection( 2 );
     await inst.ai.start( 'improve' );
     await tick();
-    assert.ok( inst.wrapper.querySelector( '.exp-oe-ai-warning' ) );
-    assert.ok( !inst.wrapper.querySelector( '[data-action="Accept"]' ).classList.contains( 'exp-oe-primary' ) );
-    inst.wrapper.querySelector( '[data-action="Reject"]' ).click();
+    assert.equal( calls[0].body.get( 'text' ), '<p>Text</p>\n\u27E6T1\u27E7' );
+    assert.ok( !inst.wrapper.querySelector( '.exp-oe-ai-warning' ) );
+    assert.ok( inst.wrapper.querySelector( '.exp-oe-ai-chip[data-token="T1"]' ), 'the table is a chip in the preview' );
+    assert.ok( inst.wrapper.querySelector( '[data-action="Accept"]' ).classList.contains( 'exp-oe-primary' ) );
+    inst.wrapper.querySelector( '[data-action="Accept"]' ).click();
+    assert.equal( t.value, '<p>New text</p><table><tbody><tr><td><p>c</p></td></tr></tbody></table>' );
 } );
 
 test( 'server error is shown with try again', async () => {
