@@ -52,6 +52,7 @@ The assistant is built on open (MIT) Tiptap packages and code of this extension.
 | `ApiKeyEnvironment` | Optional: the name of an environment variable of the PHP process holding the key, used when `ApiKey` is empty. Keeps the key out of every INI file. |
 | `ApiKeyHeader` | OpenAI compatible only: `Authorization` (default, `Bearer <key>`) or `api-key` (Azure OpenAI). |
 | `AnthropicVersion` | Anthropic only: the `anthropic-version` header, default `2023-06-01`. |
+| `AnthropicWorkspaceId` | Anthropic only: the workspace (`wrkspc_...`) a key that is not scoped to a workspace (a user key) works in, sent as the `anthropic-workspace-id` header. Empty: none is sent, as a workspace key needs. |
 | `ProviderClass` | `custom` only: a class implementing `expOETiptapAIProvider`. |
 | `Timeout` | Seconds for the whole provider call (1 to 300, default 30). |
 | `MaxInputLength` | Longest text in characters a command may send (default 20000). The browser checks it first, the server again. |

@@ -175,6 +175,19 @@ final class AIHooksTest extends TestCase
         $this->assertStringContainsString( 'Translate the text into English', $req[0]['body']['messages'][0]['content'] );
         $this->assertStringContainsString( 'writing assistant', $req[0]['body']['system'] );
         $this->assertSame( 300, $req[0]['body']['max_tokens'] );
+        $this->assertNull( $req[0]['anthropic-workspace-id'] );
+    }
+
+    public function testAnthropicWorkspaceIdForAUserKey()
+    {
+        $r = $this->service( array( 'Provider' => 'anthropic', 'Endpoint' => self::$base . '/v1/messages', 'Model' => 'claude-x',
+                                    'AnthropicWorkspaceId' => 'wrkspc_01AbC-9' ) )->run( 'improve', 'x' );
+        $this->assertStringStartsWith( 'REPLY(claude-x): ', $r['text'] );
+        $req = $this->requests();
+        $this->assertSame( 'wrkspc_01AbC-9', $req[0]['anthropic-workspace-id'] );
+        // a value that could carry a second header is refused before anything is sent
+        $this->assertRefused( $this->service( array( 'Provider' => 'anthropic', 'Endpoint' => self::$base . '/v1/messages', 'Model' => 'claude-x',
+                                                     'AnthropicWorkspaceId' => "wrkspc_1\r\nX-Evil: 1" ) ), 'improve', 'x', '/not configured/' );
     }
 
     public function testAnthropicRefusalAndMissingKey()

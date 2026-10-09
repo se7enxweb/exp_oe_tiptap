@@ -59,7 +59,17 @@ class expOETiptapAIAnthropicProvider implements expOETiptapAIProvider
         if ( isset( $options['temperature'] ) && $options['temperature'] !== null )
             $payload['temperature'] = (float) $options['temperature'];
 
-        $data = $this->http->postJson( $endpoint, array( 'x-api-key: ' . $key, 'anthropic-version: ' . $version ), $payload );
+        $headers = array( 'x-api-key: ' . $key, 'anthropic-version: ' . $version );
+        // A key that is not scoped to a workspace (a user key) has to name the workspace on every request
+        $workspace = isset( $this->settings['AnthropicWorkspaceId'] ) ? trim( (string) $this->settings['AnthropicWorkspaceId'] ) : '';
+        if ( $workspace !== '' )
+        {
+            if ( !preg_match( '/^[A-Za-z0-9_-]{1,100}$/', $workspace ) )
+                throw new expOETiptapAIException( 'The AI assistant is not configured correctly.', 'AnthropicWorkspaceId is not a workspace id' );
+            $headers[] = 'anthropic-workspace-id: ' . $workspace;
+        }
+
+        $data = $this->http->postJson( $endpoint, $headers, $payload );
         if ( !isset( $data['content'] ) || !is_array( $data['content'] ) )
             throw new expOETiptapAIException( 'The answer of the AI assistant could not be read.', 'no content[] in the answer' );
         $text = '';

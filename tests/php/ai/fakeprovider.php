@@ -31,6 +31,7 @@ if ( $log )
         'x-api-key' => isset( $_SERVER['HTTP_X_API_KEY'] ) ? $_SERVER['HTTP_X_API_KEY'] : null,
         'api-key' => isset( $_SERVER['HTTP_API_KEY'] ) ? $_SERVER['HTTP_API_KEY'] : null,
         'anthropic-version' => isset( $_SERVER['HTTP_ANTHROPIC_VERSION'] ) ? $_SERVER['HTTP_ANTHROPIC_VERSION'] : null,
+        'anthropic-workspace-id' => isset( $_SERVER['HTTP_ANTHROPIC_WORKSPACE_ID'] ) ? $_SERVER['HTTP_ANTHROPIC_WORKSPACE_ID'] : null,
         'body' => $body,
     ) ) . "\n", FILE_APPEND | LOCK_EX );
 }
