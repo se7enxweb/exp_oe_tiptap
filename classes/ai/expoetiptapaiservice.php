@@ -142,7 +142,7 @@ class expOETiptapAIService
         $length = function_exists( 'mb_strlen' ) ? mb_strlen( $text, 'UTF-8' ) : strlen( $text );
         $max = max( 1, (int) $this->settings['MaxInputLength'] );
         if ( $length > $max )
-            throw new expOETiptapAIException( 'The text is too long for the AI assistant (at most ' . $max . ' characters).', 'input ' . $length . ' > ' . $max );
+            throw new expOETiptapAIException( 'The text is too long for the AI assistant (at most %max characters).', 'input ' . $length . ' > ' . $max, 0, array( '%max' => $max ) );
         if ( trim( $text ) === '' && $command !== 'continue' )
             throw new expOETiptapAIException( 'There is no text to work on.', 'empty input' );
         $language = self::cleanLanguage( $language );

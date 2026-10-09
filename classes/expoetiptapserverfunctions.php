@@ -28,18 +28,26 @@ class expOETiptapServerFunctions extends ezjscServerFunctions
      */
     public static function ai( $args )
     {
-        $service = expOETiptapAIService::fromINI();
-        $service->checkRequest(
-            isset( $_SERVER['REQUEST_METHOD'] ) ? $_SERVER['REQUEST_METHOD'] : '',
-            self::givenToken(),
-            self::expectedToken(),
-            self::hasPolicy()
-        );
-        $post = static function ( $name )
+        try
         {
-            return isset( $_POST[$name] ) && is_string( $_POST[$name] ) ? $_POST[$name] : '';
-        };
-        return $service->run( $post( 'command' ), $post( 'text' ), $post( 'language' ), $post( 'locale' ), $post( 'format' ), $post( 'strict' ) === '1' );
+            $service = expOETiptapAIService::fromINI();
+            $service->checkRequest(
+                isset( $_SERVER['REQUEST_METHOD'] ) ? $_SERVER['REQUEST_METHOD'] : '',
+                self::givenToken(),
+                self::expectedToken(),
+                self::hasPolicy()
+            );
+            $post = static function ( $name )
+            {
+                return isset( $_POST[$name] ) && is_string( $_POST[$name] ) ? $_POST[$name] : '';
+            };
+            return $service->run( $post( 'command' ), $post( 'text' ), $post( 'language' ), $post( 'locale' ), $post( 'format' ), $post( 'strict' ) === '1' );
+        }
+        catch ( expOETiptapAIException $e )
+        {
+            // the editor reads the message in the language of the siteaccess (context extension/exp_oe_tiptap)
+            throw $e->translated();
+        }
     }
 
     /** @return string|null */
