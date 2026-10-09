@@ -45,9 +45,10 @@ before a release.
 
 ## Releasing
 
-Follow the root `AGENTS.md`: choose the next version from the published tags (`git tag -l 'v*'
---sort=version:refname`, `gh release list`), write it into `ezinfo.php` and `extension.xml`, commit, then tag that
-commit. A pushed tag is never moved.
+Choose the next version from the published tags (`git tag -l 'v*' --sort=version:refname`, `gh release list`),
+write it into `ezinfo.php`, `extension.xml` and `package.json`, add `doc/changelogs/<version>.md`, run both test
+suites and `npm run build` (the built files must not change), commit, then tag that commit. A pushed tag is never
+moved: a mistake in a release is fixed by the next one.
 
 ## Troubleshooting
 
