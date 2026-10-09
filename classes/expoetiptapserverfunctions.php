@@ -11,7 +11,8 @@
  * ezjscore server functions of the Tiptap editor (ezjscore.ini [ezjscServer_expoetiptap]).
  *
  *   POST <root>/ezjscore/call  ezjscServer_function_arguments=expoetiptap::ai
- *        ezxform_token (or header X-CSRF-Token), command, text, language (translate), locale
+ *        ezxform_token (or header X-CSRF-Token), command, text, language (translate), locale,
+ *        format (text | markup), strict (1 on the second try)
  *   -> { error_text, content: { text, command, model } }
  *
  * Checks [AISettings] Enabled, the policy exp_oe_tiptap/ai, POST and the form token itself (ezformtoken checks
@@ -38,7 +39,7 @@ class expOETiptapServerFunctions extends ezjscServerFunctions
         {
             return isset( $_POST[$name] ) && is_string( $_POST[$name] ) ? $_POST[$name] : '';
         };
-        return $service->run( $post( 'command' ), $post( 'text' ), $post( 'language' ), $post( 'locale' ) );
+        return $service->run( $post( 'command' ), $post( 'text' ), $post( 'language' ), $post( 'locale' ), $post( 'format' ), $post( 'strict' ) === '1' );
     }
 
     /** @return string|null */

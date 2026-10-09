@@ -126,10 +126,12 @@ class expOETiptapAIService
      * @param string $text
      * @param string $language target language for translate
      * @param string $locale   the editor's locale
+     * @param string $format   'text' (default) or 'markup' (the structure keeping markup, see expOETiptapAIPrompts)
+     * @param bool $strict     markup: the browser's second try after an answer that lost or invented placeholders
      * @return array( 'text' => string, 'command' => string, 'model' => string )
      * @throws expOETiptapAIException
      */
-    public function run( $command, $text, $language = '', $locale = '' )
+    public function run( $command, $text, $language = '', $locale = '', $format = 'text', $strict = false )
     {
         $command = (string) $command;
         $text = str_replace( "\0", '', (string) $text );
@@ -148,7 +150,7 @@ class expOETiptapAIService
         if ( $command === 'translate' && $language === '' )
             throw new expOETiptapAIException( 'Please choose the target language.', 'translate without language' );
 
-        list( $system, $user ) = $this->prompts->build( $command, $text, $language, $locale );
+        list( $system, $user ) = $this->prompts->build( $command, $text, $language, $locale, expOETiptapAIPrompts::cleanFormat( $format ), (bool) $strict );
         $maxTokens = max( 16, min( 32000, (int) $this->settings['MaxOutputTokens'] ) );
         $temperature = is_numeric( $this->settings['Temperature'] ) ? max( 0.0, min( 2.0, (float) $this->settings['Temperature'] ) ) : null;
         $started = microtime( true );
