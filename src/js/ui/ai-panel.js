@@ -32,7 +32,12 @@ const TEXTS = {
     table: 'Table',
     literal: 'Literal',
     noText: 'There is no text to work on',
-    cellSelection: 'Select text inside one table cell, or text outside the table.'
+    cellSelection: 'Select text inside one table cell, or text outside the table.',
+    wholeDocument: 'whole document',
+    atCursor: 'at the cursor',
+    selection: 'selected text',
+    insert: 'Insert',
+    insertBelow: 'Insert below'
 };
 
 const LANGUAGES = [
@@ -184,7 +189,7 @@ export class AIPanel {
                 return;
             if ( this.pending !== p )
                 return;
-            p.error = e && e.message ? e.message : String( e );
+            p.error = e && e.text ? this.ctx.t( e.text, e.replacements ) : ( e && e.message ? e.message : String( e ) );
             this.render( 'error' );
         } );
     }
@@ -226,7 +231,7 @@ export class AIPanel {
         const { t } = this.ctx, p = this.pending;
         const head = h( 'div', { class: 'exp-oe-ai-head' }, [
             h( 'strong', { text: t( this.labels[p.command] || p.command ) + ( p.language ? ' (' + p.language + ')' : '' ) } ),
-            h( 'span', { class: 'exp-oe-ai-scope', text: ' – ' + t( p.input.whole ? 'whole document' : ( p.command === 'continue' ? 'at the cursor' : 'selection' ) ) } )
+            h( 'span', { class: 'exp-oe-ai-scope', text: ' – ' + t( p.input.whole ? TEXTS.wholeDocument : ( p.command === 'continue' ? TEXTS.atCursor : TEXTS.selection ) ) } )
         ] );
         if ( state === 'loading' ) {
             this.show( [ head, h( 'div', { class: 'exp-oe-ai-body exp-oe-ai-loading', text: t( 'Asking the AI assistant...' ) } ),
@@ -257,7 +262,7 @@ export class AIPanel {
             body.push( h( 'div', { class: 'exp-oe-ai-note', text: t( 'A summary is text only: images, embedded objects, tables and custom tags stay in the original text.' ) } ) );
         let actions;
         if ( insert ) {
-            actions = [ [ p.command === 'continue' ? 'Insert' : 'Insert below', () => this.accept( p.command === 'continue' ? 'at' : 'below' ), true ] ];
+            actions = [ [ p.command === 'continue' ? TEXTS.insert : TEXTS.insertBelow, () => this.accept( p.command === 'continue' ? 'at' : 'below' ), true ] ];
             actions.push( [ 'Try again', () => this.start( p.command, p.language ) ], [ 'Reject', () => this.reject() ] );
         } else if ( check.ok ) {
             if ( map.tokens.size || map.links.size )

@@ -181,3 +181,28 @@ test( 'server error is shown with try again', async () => {
     inst.wrapper.querySelector( '[data-action="Close"]' ).click();
     assert.equal( inst.editor.isEditable, true );
 } );
+
+test( 'the client\'s own errors and the scope label are translated through options.i18n', async () => {
+    const down = () => Promise.resolve( { ok: false, status: 503, json: () => Promise.resolve( null ) } );
+    const { inst } = editorWith( '<p>Hello</p>', down, { } );
+    inst.ctx.t = ( ( t ) => ( text, r ) => t( {
+        'The AI assistant is not available (HTTP %status).': 'Der KI-Assistent ist nicht erreichbar (HTTP %status).',
+        'selected text': 'Auswahl'
+    }[text] || text, r ) )( inst.ctx.t );
+    inst.editor.commands.setTextSelection( { from: 1, to: 6 } );
+    await inst.ai.start( 'improve' );
+    await tick();
+    assert.equal( inst.wrapper.querySelector( '.exp-oe-ai-error' ).textContent, 'Der KI-Assistent ist nicht erreichbar (HTTP 503).' );
+    assert.match( inst.wrapper.querySelector( '.exp-oe-ai-scope' ).textContent, /Auswahl/ );
+    inst.wrapper.querySelector( '[data-action="Close"]' ).click();
+} );
+
+test( 'client errors keep the English text and the replacements for the translation', async () => {
+    const c = new AI.AIClient( { maxInputLength: 3 }, fakeFetch( {}, [] ) );
+    await assert.rejects( c.run( { command: 'improve', text: 'abcd' } ), ( e ) => {
+        assert.equal( e.message, 'The text is too long for the AI assistant (at most 3 characters).' );
+        assert.equal( e.text, AI.CLIENT_TEXTS.tooLong );
+        assert.deepEqual( e.replacements, { '%max': 3 } );
+        return true;
+    } );
+} );

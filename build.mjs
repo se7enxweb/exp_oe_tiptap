@@ -77,7 +77,7 @@ for ( const dir of [ 'src/js/editor', 'src/js/ui', 'src/js/ai' ] ) {
         for ( const re of patterns ) {
             for ( const m of source.matchAll( re ) ) {
                 const s = m[1].replace( /\\'/g, "'" );
-                if ( /[A-Za-z]/.test( s ) && !/^(mce_|exp-oe|expoetiptap::|https?:|\/)/.test( s ) && !/^[a-z_]+$/.test( s ) )
+                if ( /[A-Za-z]/.test( s ) && !/^(mce_|exp-oe|expoetiptap::|https?:|\/)/.test( s ) && !/^[a-z_-]+$/.test( s ) )
                     strings.add( s );
             }
         }

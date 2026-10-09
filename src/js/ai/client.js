@@ -28,6 +28,26 @@ export const COMMAND_LABELS = {
     continue: 'Continue writing'
 };
 
+/** texts of the client's errors: English in the message, translated by the panel through error.text (listed for strings.json) */
+export const CLIENT_TEXTS = {
+    noText: 'There is no text to work on',
+    tooLong: 'The text is too long for the AI assistant (at most %max characters).',
+    unavailable: 'The AI assistant is not available (HTTP %status).',
+    empty: 'Empty answer from the server',
+    unexpected: 'Unexpected answer from the server'
+};
+
+/** an Error whose English message is filled in, with text and replacements kept for the translation */
+function failure( text, replacements ) {
+    let message = text;
+    for ( const [ k, v ] of Object.entries( replacements || {} ) )
+        message = message.split( k ).join( String( v ) );
+    const e = new Error( message );
+    e.text = text;
+    e.replacements = replacements || null;
+    return e;
+}
+
 export class AIClient {
     /**
      * @param {Object} options { ezjscoreUrl, formToken, call ('expoetiptap::ai'), locale, maxInputLength }
@@ -54,9 +74,9 @@ export class AIClient {
         const o = this.options;
         const text = String( request.text || '' );
         if ( !text.trim() && request.command !== 'continue' )
-            return Promise.reject( new Error( 'There is no text to work on' ) );
+            return Promise.reject( failure( CLIENT_TEXTS.noText ) );
         if ( text.length > o.maxInputLength )
-            return Promise.reject( new Error( 'The text is too long for the AI assistant (' + text.length + ' > ' + o.maxInputLength + ' characters)' ) );
+            return Promise.reject( failure( CLIENT_TEXTS.tooLong, { '%max': o.maxInputLength } ) );
         this.abort();
         const controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
         this.controller = controller;
@@ -82,18 +102,18 @@ export class AIClient {
             signal: controller ? controller.signal : undefined
         } ).then( ( r ) => {
             if ( !r.ok )
-                throw new Error( 'The AI assistant is not available (HTTP ' + r.status + ')' );
+                throw failure( CLIENT_TEXTS.unavailable, { '%status': r.status } );
             return r.json();
         } ).then( ( data ) => {
             if ( this.controller === controller )
                 this.controller = null;
             if ( !data )
-                throw new Error( 'Empty answer from the server' );
+                throw failure( CLIENT_TEXTS.empty );
             if ( data.error_text )
                 throw new Error( data.error_text );
             const c = data.content || {};
             if ( typeof c.text !== 'string' )
-                throw new Error( 'Unexpected answer from the server' );
+                throw failure( CLIENT_TEXTS.unexpected );
             return { text: c.text, command: c.command || request.command, model: c.model || '' };
         } );
     }
