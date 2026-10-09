@@ -1,7 +1,7 @@
 <?php
 /**
- * ezinfo.php, extension.xml and composer.json say the same: version, name, licence, website (AGENTS.md: a release
- * carries its version in both files).
+ * ezinfo.php, extension.xml, composer.json and package.json say the same: version, name, licence, website, and the
+ * Tiptap version the bundle is built with (a release carries its version in every one of them).
  */
 
 require_once __DIR__ . '/bootstrap.php';
@@ -60,6 +60,28 @@ final class ExtensionMetadataTest extends TestCase
         foreach ( $this->xml()->metadata->software->uses as $uses )
             $names[] = (string) $uses->name;
         $this->assertContains( 'Tiptap', $names );
+    }
+
+    public function testTiptapVersionMatchesTheLockedPackages()
+    {
+        $lock = json_decode( (string) file_get_contents( EXP_OE_TIPTAP_TEST_EXTENSION . '/package-lock.json' ), true );
+        $this->assertIsArray( $lock, 'package-lock.json is valid JSON' );
+        $locked = $lock['packages']['node_modules/@tiptap/core']['version'];
+        $this->assertSame( $locked, exp_oe_tiptapInfo::info()['Includes the following third-party software']['Version'] );
+        $versions = array();
+        foreach ( $this->xml()->metadata->software->uses as $uses )
+            $versions[(string) $uses->name] = (string) $uses->version;
+        $this->assertSame( $locked, $versions['Tiptap'] );
+        foreach ( array( '@tiptap/pm', '@tiptap/extension-table', '@tiptap/extensions' ) as $package )
+            $this->assertSame( $locked, $lock['packages']['node_modules/' . $package]['version'], $package );
+    }
+
+    public function testPackageJsonCarriesTheReleaseVersion()
+    {
+        $package = json_decode( (string) file_get_contents( EXP_OE_TIPTAP_TEST_EXTENSION . '/package.json' ), true );
+        $this->assertIsArray( $package );
+        $this->assertSame( exp_oe_tiptapInfo::info()['Version'], $package['version'] );
+        $this->assertSame( 'GPL-2.0-or-later', $package['license'] );
     }
 
     /**
