@@ -55,7 +55,10 @@ The button is not there when:
 If the site has them switched on and your role has the policy `exp_oe_tiptap/ai`, Tiptap's toolbar has an **AI**
 menu: improve writing, make shorter, make longer, fix spelling and grammar, translate, summarise, continue
 writing. Select text (or place the cursor, for "continue"), choose a command, and the result is shown as a
-suggestion: **Accept** puts it into the text, **Reject** leaves the text as it was. The text you select is sent
+suggestion: **Accept** puts it into the text, **Reject** leaves the text as it was. The assistant only changes the
+wording: images, embedded objects, tables, custom tags, anchors, links and formatting stay where they are (they show
+as small chips in the suggestion). If an answer loses one, the panel warns and **Insert below** or **Keep original**
+keep your text safe. Text inside a table or a custom tag box is changed only when you select it. The text you select is sent
 to the AI provider the site has chosen; do not use it on confidential content unless your organisation allows
 it. More: [ai-hooks.md](ai-hooks.md).
 
