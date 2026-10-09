@@ -5,7 +5,7 @@ the Online Editor (ezoe). Editors switch between the two on the fly, on the same
 they typed. Optional AI commands (improve, shorten, extend, fix spelling, translate, summarise, continue) call a
 provider of your choice from the server; they are off by default.
 
-**Status: 0.1.0, v1 under construction (compare-ready).** Not for production yet. ezoe stays the default editor
+**Status: 0.1.0, the first release (compare-ready).** Not for production yet: ezoe stays the default editor
 until the round-trip test suite is green on your content. See [doc/plan.md](doc/plan.md) for the phases.
 
 ## How it works, in one paragraph
@@ -16,9 +16,13 @@ mirrors ezoe's HTML dialect one to one, so what one editor writes the other read
 same. The input handler `expOETiptapXMLInput` extends ezoe's `eZOEXMLInput` and changes nothing but the edit
 template. Details: [doc/architecture.md](doc/architecture.md).
 
-## Screenshots
+## Screenshot
 
-_To come with v1: the same article in ezoe (TinyMCE) and in Tiptap, the switch button, an AI suggestion._
+![A folder in the admin, its summary edited with Tiptap, the switch back to the Online Editor below the field](doc/images/tiptap-in-the-admin.png)
+
+A text field edited with Tiptap in the admin: the toolbar follows ezoe's layout settings, the AI button sits at its
+end when the AI commands are enabled, and the button "Switch to Online Editor (TinyMCE)" below the field goes back
+to ezoe with the text kept.
 
 ## Quick start
 
@@ -53,6 +57,7 @@ Full instructions: [INSTALL.md](INSTALL.md).
 | [doc/extending.md](doc/extending.md) | custom tags, toolbar buttons, AI commands |
 | [doc/maintenance.md](doc/maintenance.md) | upgrading Tiptap, rebuilding, tests, troubleshooting |
 | [doc/plan.md](doc/plan.md) | plan, phases, risks, open decisions |
+| [doc/changelogs/](doc/changelogs/0.1.0.md) | what changed in each release |
 
 ## Licence
 
