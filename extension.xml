@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<software>
+    <metadata>
+        <name>Exponential Online Editor Tiptap</name>
+        <version>0.1.0</version>
+        <copyright>Copyright (C) 1998 - 2026 7x &amp; Exponential Foundation. All rights reserved.</copyright>
+        <license>GNU General Public License v2.0 (or any later version)</license>
+        <info_url>https://github.com/se7enxweb/exp_oe_tiptap</info_url>
+
+        <software>
+            <uses>
+                <name>Tiptap</name>
+                <license>MIT License</license>
+                <copyright>Copyright (C) 2025, Tiptap GmbH</copyright>
+                <info_url>https://tiptap.dev/</info_url>
+                <version>3.31.4</version>
+            </uses>
+            <uses>
+                <name>ProseMirror</name>
+                <license>MIT License</license>
+                <copyright>Copyright (C) 2015-2025 by Marijn Haverbeke and others</copyright>
+                <info_url>https://prosemirror.net/</info_url>
+                <version>1.x</version>
+            </uses>
+        </software>
+    </metadata>
+
+    <dependencies>
+        <requires>
+            <extension name="ezjscore" />
+            <extension name="ezoe" />
+        </requires>
+    </dependencies>
+</software>

@@ -1,0 +1,649 @@
+{
+    "description": "ezxml (<name>.xml) and the ezoe editor HTML eZOEXMLInput::inputXML() makes of it (<name>.html), siteaccess admin of alpha. a* = real content of alpha (e-mail addresses replaced), s* = synthetic.",
+    "fixtures": [
+        {
+            "name": "a001-folder-short-description",
+            "source": "alpha",
+            "class": "folder",
+            "attribute": "short_description",
+            "language": "eng-US",
+            "features": [
+                "embed",
+                "custom-attr"
+            ]
+        },
+        {
+            "name": "a002-folder-description",
+            "source": "alpha",
+            "class": "folder",
+            "attribute": "description",
+            "language": "eng-US",
+            "features": [
+                "link-target"
+            ]
+        },
+        {
+            "name": "a003-ng-article-body",
+            "source": "alpha",
+            "class": "ng_article",
+            "attribute": "body",
+            "language": "ger-DE",
+            "features": [
+                "link-url",
+                "link-anchor",
+                "ul",
+                "nested-list",
+                "header",
+                "line",
+                "link-strong"
+            ]
+        },
+        {
+            "name": "a004-ng-article-body",
+            "source": "alpha",
+            "class": "ng_article",
+            "attribute": "body",
+            "language": "eng-US",
+            "features": [
+                "link-strong"
+            ]
+        },
+        {
+            "name": "a005-ng-article-body",
+            "source": "alpha",
+            "class": "ng_article",
+            "attribute": "body",
+            "language": "eng-US",
+            "features": [
+                "em-strong"
+            ]
+        },
+        {
+            "name": "a006-ng-article-body",
+            "source": "alpha",
+            "class": "ng_article",
+            "attribute": "body",
+            "language": "eng-US",
+            "features": [
+                "link-target",
+                "em-strong"
+            ]
+        },
+        {
+            "name": "a007-ng-blog-post-body",
+            "source": "alpha",
+            "class": "ng_blog_post",
+            "attribute": "body",
+            "language": "eng-US",
+            "features": [
+                "strong-link"
+            ]
+        },
+        {
+            "name": "a008-ng-blog-post-body",
+            "source": "alpha",
+            "class": "ng_blog_post",
+            "attribute": "body",
+            "language": "eng-US",
+            "features": [
+                "link-strong"
+            ]
+        },
+        {
+            "name": "a009-ng-article-body",
+            "source": "alpha",
+            "class": "ng_article",
+            "attribute": "body",
+            "language": "eng-US",
+            "features": [
+                "section-nested"
+            ]
+        },
+        {
+            "name": "a010-ng-article-body",
+            "source": "alpha",
+            "class": "ng_article",
+            "attribute": "body",
+            "language": "eng-US",
+            "features": [
+                "link-strong"
+            ]
+        },
+        {
+            "name": "a011-ng-article-body",
+            "source": "alpha",
+            "class": "ng_article",
+            "attribute": "body",
+            "language": "eng-US",
+            "features": [
+                "embed"
+            ]
+        },
+        {
+            "name": "a012-ng-news-body",
+            "source": "alpha",
+            "class": "ng_news",
+            "attribute": "body",
+            "language": "eng-US",
+            "features": [
+                "link-target"
+            ]
+        },
+        {
+            "name": "a013-ng-article-body",
+            "source": "alpha",
+            "class": "ng_article",
+            "attribute": "body",
+            "language": "eng-US",
+            "features": [
+                "embed"
+            ]
+        },
+        {
+            "name": "a014-ng-recipe-body",
+            "source": "alpha",
+            "class": "ng_recipe",
+            "attribute": "body",
+            "language": "eng-US",
+            "features": [
+                "nested-list"
+            ]
+        },
+        {
+            "name": "a015-ng-recipe-body",
+            "source": "alpha",
+            "class": "ng_recipe",
+            "attribute": "body",
+            "language": "eng-US",
+            "features": [
+                "nested-list"
+            ]
+        },
+        {
+            "name": "a016-ng-recipe-body",
+            "source": "alpha",
+            "class": "ng_recipe",
+            "attribute": "body",
+            "language": "eng-US",
+            "features": [
+                "ol",
+                "section-nested"
+            ]
+        },
+        {
+            "name": "a017-ng-recipe-body",
+            "source": "alpha",
+            "class": "ng_recipe",
+            "attribute": "body",
+            "language": "eng-US",
+            "features": [
+                "nested-list"
+            ]
+        },
+        {
+            "name": "a018-ng-recipe-body",
+            "source": "alpha",
+            "class": "ng_recipe",
+            "attribute": "body",
+            "language": "eng-US",
+            "features": [
+                "ol",
+                "section-nested"
+            ]
+        },
+        {
+            "name": "a019-ng-recipe-body",
+            "source": "alpha",
+            "class": "ng_recipe",
+            "attribute": "body",
+            "language": "eng-US",
+            "features": [
+                "ol",
+                "section-nested"
+            ]
+        },
+        {
+            "name": "a020-ng-contact-form-gdpr-consent-label",
+            "source": "alpha",
+            "class": "ng_contact_form",
+            "attribute": "gdpr_consent_label",
+            "language": "eng-US",
+            "features": [
+                "link-node"
+            ]
+        },
+        {
+            "name": "a021-ng-banner-description",
+            "source": "alpha",
+            "class": "ng_banner",
+            "attribute": "description",
+            "language": "eng-US",
+            "features": [
+                "ul"
+            ]
+        },
+        {
+            "name": "a022-ng-component-about-description-2",
+            "source": "alpha",
+            "class": "ng_component_about",
+            "attribute": "description_2",
+            "language": "eng-US",
+            "features": [
+                "link-url",
+                "header"
+            ]
+        },
+        {
+            "name": "a023-ng-component-about-description-2",
+            "source": "alpha",
+            "class": "ng_component_about",
+            "attribute": "description_2",
+            "language": "ger-DE",
+            "features": [
+                "link-url",
+                "header"
+            ]
+        },
+        {
+            "name": "a024-ng-component-features-item-3-description",
+            "source": "alpha",
+            "class": "ng_component_features",
+            "attribute": "item_3_description",
+            "language": "eng-US",
+            "features": [
+                "ul"
+            ]
+        },
+        {
+            "name": "a025-ng-component-features-item-3-description",
+            "source": "alpha",
+            "class": "ng_component_features",
+            "attribute": "item_3_description",
+            "language": "ger-DE",
+            "features": [
+                "ul"
+            ]
+        },
+        {
+            "name": "a026-ng-lead-form-gdpr-consent-label",
+            "source": "alpha",
+            "class": "ng_lead_form",
+            "attribute": "gdpr_consent_label",
+            "language": "ger-DE",
+            "features": [
+                "link-node"
+            ]
+        },
+        {
+            "name": "a027-ng-lead-form-gdpr-consent-label",
+            "source": "alpha",
+            "class": "ng_lead_form",
+            "attribute": "gdpr_consent_label",
+            "language": "ger-DE",
+            "features": [
+                "link-node"
+            ]
+        },
+        {
+            "name": "a028-cjw-newsletter-system-short-description",
+            "source": "alpha",
+            "class": "cjw_newsletter_system",
+            "attribute": "short_description",
+            "language": "eng-US",
+            "features": [
+                "embed",
+                "custom-attr"
+            ]
+        },
+        {
+            "name": "a029-ng-shortcut-teaser-intro",
+            "source": "alpha",
+            "class": "ng_shortcut",
+            "attribute": "teaser_intro",
+            "language": "eng-US",
+            "features": [
+                "link-anchor"
+            ]
+        },
+        {
+            "name": "a030-ng-shortcut-teaser-intro",
+            "source": "alpha",
+            "class": "ng_shortcut",
+            "attribute": "teaser_intro",
+            "language": "eng-US",
+            "features": [
+                "link-anchor"
+            ]
+        },
+        {
+            "name": "a031-ng-shortcut-teaser-intro",
+            "source": "alpha",
+            "class": "ng_shortcut",
+            "attribute": "teaser_intro",
+            "language": "eng-US",
+            "features": [
+                "link-anchor"
+            ]
+        },
+        {
+            "name": "a032-ng-shortcut-teaser-intro",
+            "source": "alpha",
+            "class": "ng_shortcut",
+            "attribute": "teaser_intro",
+            "language": "eng-US",
+            "features": [
+                "link-url"
+            ]
+        },
+        {
+            "name": "a033-cjw-newsletter-article-short-description",
+            "source": "alpha",
+            "class": "cjw_newsletter_article",
+            "attribute": "short_description",
+            "language": "eng-US",
+            "features": [
+                "link-node"
+            ]
+        },
+        {
+            "name": "a034-ng-frontpage-teaser-intro",
+            "source": "alpha",
+            "class": "ng_frontpage",
+            "attribute": "teaser_intro",
+            "language": "ger-DE",
+            "features": [
+                "custom-attr"
+            ]
+        },
+        {
+            "name": "a035-ng-article-body",
+            "source": "alpha",
+            "class": "ng_article",
+            "attribute": "body",
+            "language": "eng-US",
+            "features": [
+                "link-title"
+            ]
+        },
+        {
+            "name": "a036-ng-recipe-body",
+            "source": "alpha",
+            "class": "ng_recipe",
+            "attribute": "body",
+            "language": "eng-US",
+            "features": [
+                "ol"
+            ]
+        },
+        {
+            "name": "a037-ng-article-body",
+            "source": "alpha",
+            "class": "ng_article",
+            "attribute": "body",
+            "language": "eng-US",
+            "features": [
+                "link-title"
+            ]
+        },
+        {
+            "name": "a038-ng-news-teaser-intro",
+            "source": "alpha",
+            "class": "ng_news",
+            "attribute": "teaser_intro",
+            "language": "ger-DE",
+            "features": [
+                "custom",
+                "sup-sub"
+            ]
+        },
+        {
+            "name": "a039-ng-news-body",
+            "source": "alpha",
+            "class": "ng_news",
+            "attribute": "body",
+            "language": "ger-DE",
+            "features": [
+                "table"
+            ]
+        },
+        {
+            "name": "a040-ng-news-full-intro",
+            "source": "alpha",
+            "class": "ng_news",
+            "attribute": "full_intro",
+            "language": "ger-DE",
+            "features": [
+                "underline"
+            ]
+        },
+        {
+            "name": "a041-ng-news-body",
+            "source": "alpha",
+            "class": "ng_news",
+            "attribute": "body",
+            "language": "ger-DE",
+            "features": [
+                "table"
+            ]
+        },
+        {
+            "name": "a042-ng-news-teaser-intro",
+            "source": "alpha",
+            "class": "ng_news",
+            "attribute": "teaser_intro",
+            "language": "ger-DE",
+            "features": [
+                "custom",
+                "sup-sub"
+            ]
+        },
+        {
+            "name": "a043-ng-news-teaser-intro",
+            "source": "alpha",
+            "class": "ng_news",
+            "attribute": "teaser_intro",
+            "language": "ger-DE",
+            "features": [
+                "header"
+            ]
+        },
+        {
+            "name": "a044-ng-news-body",
+            "source": "alpha",
+            "class": "ng_news",
+            "attribute": "body",
+            "language": "ger-DE",
+            "features": [
+                "table"
+            ]
+        },
+        {
+            "name": "a045-ng-news-teaser-intro",
+            "source": "alpha",
+            "class": "ng_news",
+            "attribute": "teaser_intro",
+            "language": "ger-DE",
+            "features": [
+                "custom",
+                "sup-sub"
+            ]
+        },
+        {
+            "name": "a046-ng-news-body",
+            "source": "alpha",
+            "class": "ng_news",
+            "attribute": "body",
+            "language": "ger-DE",
+            "features": [
+                "custom",
+                "custom-attr",
+                "table",
+                "sup-sub"
+            ]
+        },
+        {
+            "name": "a047-ng-article-teaser-intro",
+            "source": "alpha",
+            "class": "ng_article",
+            "attribute": "teaser_intro",
+            "language": "ger-DE",
+            "features": [
+                "link-target"
+            ]
+        },
+        {
+            "name": "a048-tmv-event-location",
+            "source": "alpha",
+            "class": "tmv_event",
+            "attribute": "location",
+            "language": "eng-US",
+            "features": [
+                "line"
+            ]
+        },
+        {
+            "name": "a049-tmv-event-location",
+            "source": "alpha",
+            "class": "tmv_event",
+            "attribute": "location",
+            "language": "ger-DE",
+            "features": [
+                "line"
+            ]
+        },
+        {
+            "name": "a050-tmv-event-location",
+            "source": "alpha",
+            "class": "tmv_event",
+            "attribute": "location",
+            "language": "eng-US",
+            "features": [
+                "line"
+            ]
+        },
+        {
+            "name": "s051-paragraph-align",
+            "source": "synthetic",
+            "features": [
+                "paragraph-align"
+            ]
+        },
+        {
+            "name": "s052-headers-anchor-align",
+            "source": "synthetic",
+            "features": [
+                "header",
+                "header-anchor",
+                "header-align",
+                "section-nested"
+            ]
+        },
+        {
+            "name": "s053-anchor-inline",
+            "source": "synthetic",
+            "features": [
+                "anchor",
+                "link-anchor"
+            ]
+        },
+        {
+            "name": "s054-literal",
+            "source": "synthetic",
+            "features": [
+                "literal"
+            ]
+        },
+        {
+            "name": "s055-nested-marks",
+            "source": "synthetic",
+            "features": [
+                "strong-em",
+                "em-strong",
+                "link-strong",
+                "strong-link"
+            ]
+        },
+        {
+            "name": "s056-links-all",
+            "source": "synthetic",
+            "features": [
+                "link-object",
+                "link-node",
+                "link-target",
+                "link-title",
+                "link-id",
+                "link-view",
+                "link-url"
+            ]
+        },
+        {
+            "name": "s057-table-attributes",
+            "source": "synthetic",
+            "features": [
+                "table",
+                "table-th",
+                "table-span",
+                "table-width",
+                "table-class",
+                "table-custom-attr"
+            ]
+        },
+        {
+            "name": "s058-embeds",
+            "source": "synthetic",
+            "features": [
+                "embed",
+                "embed-image",
+                "embed-inline",
+                "embed-node",
+                "embed-class",
+                "embed-custom-attr",
+                "embed-align"
+            ]
+        },
+        {
+            "name": "s059-custom-tags",
+            "source": "synthetic",
+            "features": [
+                "custom",
+                "custom-attr",
+                "custom-empty",
+                "sup-sub",
+                "underline",
+                "custom-inline"
+            ]
+        },
+        {
+            "name": "s060-lists",
+            "source": "synthetic",
+            "features": [
+                "ul",
+                "ol",
+                "nested-list",
+                "li-paragraphs"
+            ]
+        },
+        {
+            "name": "s061-whitespace-entities",
+            "source": "synthetic",
+            "features": [
+                "whitespace",
+                "entities"
+            ]
+        },
+        {
+            "name": "s062-lines",
+            "source": "synthetic",
+            "features": [
+                "line"
+            ]
+        },
+        {
+            "name": "s063-link-around-embed-inline",
+            "source": "synthetic",
+            "features": [
+                "link-embed-inline"
+            ]
+        }
+    ]
+}

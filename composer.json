@@ -1,0 +1,27 @@
+{
+    "name": "se7enxweb/exp_oe_tiptap",
+    "description": "A Tiptap based online editor for ezxmltext fields in Exponential 6, switchable on the fly with the Online Editor (ezoe), with provider-agnostic AI hooks",
+    "type": "ezpublish-legacy-extension",
+    "keywords": [ "Exponential", "Exponential 6", "legacy extension", "online editor", "Tiptap", "ezoe", "ezxmltext", "WYSIWYG" ],
+    "homepage": "https://github.com/se7enxweb/exp_oe_tiptap",
+    "license": "GPL-2.0-or-later",
+    "authors": [
+        { "name": "7x", "homepage": "https://se7enx.com", "email": "info@se7enx.com", "role": "Author" }
+    ],
+    "support": {
+        "issues": "https://github.com/se7enxweb/exp_oe_tiptap/issues",
+        "source": "https://github.com/se7enxweb/exp_oe_tiptap"
+    },
+    "require": {
+        "php": ">=8.0",
+        "ext-json": "*",
+        "se7enxweb/exponential": "^6.0.14",
+        "se7enxweb/ezpublish-legacy-installer": "*"
+    },
+    "suggest": {
+        "ext-curl": "The AI hooks call the configured provider over HTTPS"
+    },
+    "extra": {
+        "ezpublish-legacy-extension-name": "exp_oe_tiptap"
+    }
+}

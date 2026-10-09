@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  The PHP tests of exp_oe_tiptap: editor choice, switch view, metadata, input handler (tests/php), the round trip
+  ezxml -> ezoe HTML -> ezxml (tests/php/roundtrip) and the AI hooks with a fake provider (tests/php/ai).
+  No database, no request. EXPONENTIAL_ROOT names the Exponential root the kernel classes come from (default: the
+  installation this extension is installed in).
+  Run from the Exponential root: nice -n 15 php vendor/bin/phpunit -c extension/exp_oe_tiptap/phpunit.xml.dist
+-->
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         bootstrap="tests/php/bootstrap.php"
+         colors="false"
+         cacheDirectory="var/phpunit"
+         failOnWarning="true"
+         failOnRisky="true"
+         beStrictAboutOutputDuringTests="true">
+    <testsuites>
+        <testsuite name="exp_oe_tiptap">
+            <directory suffix="Test.php">tests/php</directory>
+        </testsuite>
+    </testsuites>
+</phpunit>

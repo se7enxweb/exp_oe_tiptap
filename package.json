@@ -1,0 +1,29 @@
+{
+  "name": "exp-oe-tiptap",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Tiptap online editor for ezxmltext fields in Exponential, switchable with ezoe",
+  "license": "GPL-2.0-or-later",
+  "type": "module",
+  "imports": {
+    "#ezoe-schema": "./src/js/schema/index.js"
+  },
+  "scripts": {
+    "build": "node build.mjs",
+    "build:dev": "node build.mjs --dev",
+    "test": "node --test --test-concurrency=1 \"tests/js/**/*.test.mjs\"",
+    "test:ui": "node --test --test-concurrency=1 \"tests/js/ui/*.test.mjs\"",
+    "test:php-ai": "php tests/php/ai/run.php"
+  },
+  "dependencies": {
+    "@tiptap/core": "3.31.4",
+    "@tiptap/pm": "3.31.4",
+    "@tiptap/extension-table": "3.31.4",
+    "@tiptap/extensions": "3.31.4"
+  },
+  "devDependencies": {
+    "@happy-dom/global-registrator": "20.14.6",
+    "esbuild": "0.28.2",
+    "happy-dom": "20.14.6"
+  }
+}
