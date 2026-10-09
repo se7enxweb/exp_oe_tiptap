@@ -79,8 +79,13 @@ innermost, that formatting is not split around it.
   it in the admin siteaccess). The 50 `a*` fixtures are real alpha content, taken with read-only queries, with e-mail
   addresses, the names in credit lines, the names of private persons and of local performers, and the organiser's
   postal address and phone number replaced by placeholders, the same way in the `.xml` and the `.html` of each
-  pair. Four link targets that named a person exist only in the `.html` (the `.xml` keeps its `url_id`), so a round
-  trip against a copy of the database registers them as new URLs. The 13 `s*` fixtures are synthetic and cover what alpha's
+  pair. Four link targets that named a person were replaced by placeholder URLs. No `url_id` of the database points
+  to a placeholder, so in the `.xml` these four links name their placeholder as `href` (the package form of a link)
+  instead of a `url_id`, and the round trip reads a link's `href` as its URL. The `.xml` and the `.html` of each
+  pair therefore name the same target. The 22 alpha fixtures whose content was later brought into ezoe's dialect
+  on alpha (lists, embeds and headers moved where ezoe keeps them, see below) were taken again from the repaired
+  content, from the same objects, attributes and languages, so their names and manifest entries did not change.
+  The 13 `s*` fixtures are synthetic and cover what alpha's
   content does not use: anchors, literals, tables with th/colspan/rowspan/width/custom attributes, every kind of
   embed, block and inline custom tags, links to objects and nodes with target/title/id/view. `manifest.json` lists
   the source and the features of each.
@@ -101,27 +106,34 @@ innermost, that formatting is not split around it.
 
 | | identical | equal | lossy |
 |---|---|---|---|
-| Tiptap vs original ezxml | 21 | 15 | 27 |
-| ezoe alone vs original ezxml | 23 | 13 | 27 |
+| Tiptap vs original ezxml | 32 | 25 | 6 |
+| ezoe alone vs original ezxml | 40 | 17 | 6 |
 | **Tiptap vs ezoe alone** | **52** | **11** | **0** |
 
 Tiptap loses nothing that ezoe keeps. The 11 "equal" cases differ only in mark nesting order (`<link><strong>` versus
 `<strong><link>`) or in redundant nested `<emphasize><emphasize>`, which Tiptap merges.
 
-All 27 lossy cases are lossy in ezoe alone, in exactly the same way. In other words they are limits of ezoe's
-editor, not of the mapping:
+All 6 lossy cases (1 alpha fixture, 5 synthetic) are lossy in ezoe alone, in exactly the same way. In other words
+they are limits of ezoe's editor, not of the mapping:
 
-- **Imported content outside ezoe's dialect** (22 of the alpha fixtures, the Netgen media-site import): a `<ul>`,
-  `<ol>` or `<embed object_remote_id>` directly under `<section>`, a `<header>` after a paragraph inside the same
-  section, `level="2"` on headers, or empty `<paragraph/>` elements. `inputXML()` drops whatever is not a header,
-  paragraph or section at section level ("Unsupported tag at this level"). **Saving one of these objects in either
-  editor deletes those lists and embeds.**
+- A URL with a `#fragment` comes back as the URL plus `anchor_name` (1 alpha fixture). The link renders the same
+  href; the fragment is the only difference in that fixture.
 - `<header anchor_name>` comes back as `<header><anchor/>…` (content.ini `[header] AnchorAsAttribute` is not set).
 - An embed without `size` gets the default size (`DefaultEmbedAlias`) written.
 - Two block custom tags in one paragraph are split into two paragraphs, or the other way round.
 - In a list item whose paragraph is followed by a nested list, the paragraph's text is wrapped in `<line>`.
 - A link around an inline embed whose preview itself contains a link is broken by the browser's HTML parser
   (nested `<a>`), in TinyMCE as well as in Tiptap.
+
+**Content outside ezoe's dialect.** Until 2026-10-09, 22 of the alpha fixtures came from imported media-site
+content (the Netgen media-site import) with a `<ul>`, `<ol>` or `<embed object_remote_id>` directly under
+`<section>`, a `<header>` after a paragraph inside the same section, `level="2"` on headers, or empty
+`<paragraph/>` elements. `inputXML()` drops whatever is not a header, paragraph or section at section level
+("Unsupported tag at this level"), so all 22 were lossy, in ezoe as in Tiptap. Alpha's content was then repaired
+into ezoe's dialect without changing its text or how it renders, and the 22 fixtures were taken again: none of them
+is lossy for that reason any more. Before this result the table read 21/15/27 (Tiptap vs original), 23/13/27 (ezoe
+alone vs original) and 52/11/0 (Tiptap vs ezoe alone). Other installations can have such content too. **Saving an
+object like that in either editor deletes those lists and embeds**, so run the round trip on your own content first.
 
 ## Known limits
 
