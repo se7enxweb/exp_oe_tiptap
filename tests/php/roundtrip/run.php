@@ -25,7 +25,7 @@ expOETiptapRoundtrip::useSandboxDatabase( getenv( 'EXPOETIPTAP_SANDBOX_DB' ) );
 if ( !$tiptapDir || !is_dir( $tiptapDir ) )
 {
     echo "FAIL EXPOETIPTAP_TIPTAP_DIR is not the output directory of tests/js/schema/roundtrip.mjs\n";
-    return 1;
+    return false;
 }
 
 $labels = array( 'identical' => 'identical', 'equal' => 'equal (whitespace / nesting order)', 'lossy' => 'LOSSY' );
@@ -42,7 +42,7 @@ foreach ( glob( "$fixtureDir/*.xml" ) as $xmlFile )
     if ( !is_file( $tiptapFile ) || !is_file( $baselineFile ) )
     {
         echo "FAIL $name: no output of step 1\n";
-        return 1;
+        return false;
     }
     $original = file_get_contents( $xmlFile );
     $tiptapXml = expOETiptapRoundtrip::editorHTMLToXML( file_get_contents( $tiptapFile ), $tiptapMessages );
@@ -77,4 +77,5 @@ file_put_contents( "$tiptapDir/report.md", $md );
 
 echo "\nTotals: " . json_encode( $totals ) . "\n";
 echo ( $tiptapOnlyLoss ? 'FAIL' : 'PASS' ) . ' ' . count( $rows ) . " fixtures, $tiptapOnlyLoss where Tiptap loses what ezoe alone keeps\n";
-return $tiptapOnlyLoss ? 1 : 0;
+// bin/php/ezexec.php exits 0 when the included script returns 1 (or nothing) and 1 for any other value
+return $tiptapOnlyLoss ? false : 1;
