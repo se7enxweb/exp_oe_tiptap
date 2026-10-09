@@ -162,6 +162,13 @@ class expOETiptapRoundtrip
                 $name = 'url';
                 $value = self::scrubPersonalData( (string)eZURL::url( (int)$value ) );
             }
+            else if ( $resolveUrls && $name === 'href' && $node->nodeName === 'link' )
+            {
+                // a fixture link whose target was replaced by a placeholder names it as href (the package form of
+                // a link), because no url_id of the database points to the placeholder
+                $name = 'url';
+                $value = self::scrubPersonalData( $value );
+            }
             $attributes[$name] = $value;
         }
         ksort( $attributes );
@@ -180,8 +187,8 @@ class expOETiptapRoundtrip
     /**
      * The document in a form that ignores whitespace differences (runs of spaces and no-break spaces are one
      * space, whitespace only text between blocks is dropped, text is trimmed at the start and end of a
-     * paragraph, line, header and list item), resolves link url_id to the URL and flattens the nesting of
-     * strong, emphasize, link and inline custom tags.
+     * paragraph, line, header and list item), resolves link url_id (or a placeholder href) to the URL and flattens
+     * the nesting of strong, emphasize, link and inline custom tags.
      */
     public static function semanticForm( $xml )
     {
