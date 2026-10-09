@@ -1,5 +1,5 @@
 {
-    "description": "ezxml (<name>.xml) and the ezoe editor HTML eZOEXMLInput::inputXML() makes of it (<name>.html), siteaccess admin of alpha. a* = real content of alpha (e-mail addresses replaced), s* = synthetic.",
+    "description": "ezxml (<name>.xml) and the ezoe editor HTML eZOEXMLInput::inputXML() makes of it (<name>.html), siteaccess admin of alpha. a* = real content of alpha with personal data replaced (e-mail addresses, credit names, names of private persons, contact data and their link targets), s* = synthetic.",
     "fixtures": [
         {
             "name": "a001-folder-short-description",

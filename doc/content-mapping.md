@@ -77,7 +77,10 @@ innermost, that formatting is not split around it.
 
 - `tests/fixtures/`: 63 pairs of `NAME.xml` (stored ezxml) and `NAME.html` (what `eZOEXMLInput::inputXML()` makes of
   it in the admin siteaccess). The 50 `a*` fixtures are real alpha content, taken with read-only queries, with e-mail
-  addresses and the names in credit lines replaced. The 13 `s*` fixtures are synthetic and cover what alpha's
+  addresses, the names in credit lines, the names of private persons and of local performers, and the organiser's
+  postal address and phone number replaced by placeholders, the same way in the `.xml` and the `.html` of each
+  pair. Four link targets that named a person exist only in the `.html` (the `.xml` keeps its `url_id`), so a round
+  trip against a copy of the database registers them as new URLs. The 13 `s*` fixtures are synthetic and cover what alpha's
   content does not use: anchors, literals, tables with th/colspan/rowspan/width/custom attributes, every kind of
   embed, block and inline custom tags, links to objects and nodes with target/title/id/view. `manifest.json` lists
   the source and the features of each.
