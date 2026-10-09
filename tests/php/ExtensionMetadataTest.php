@@ -62,12 +62,21 @@ final class ExtensionMetadataTest extends TestCase
         $this->assertContains( 'Tiptap', $names );
     }
 
-    public function testExtensionXmlRequiresEzoe()
+    /**
+     * ezoe is declared as extended, not required: the kernel then reads this extension's settings after ezoe's, in
+     * any ActiveExtensions order, so its AliasClasses wins. With <requires> ezoe's settings come last and ezoe's
+     * alias wins.
+     */
+    public function testExtensionXmlExtendsEzoeAndRequiresEzjscore()
     {
         $required = array();
         foreach ( $this->xml()->dependencies->requires->extension as $extension )
             $required[] = (string) $extension['name'];
-        $this->assertContains( 'ezoe', $required );
+        $extended = array();
+        foreach ( $this->xml()->dependencies->extends->extension as $extension )
+            $extended[] = (string) $extension['name'];
+        $this->assertContains( 'ezoe', $extended );
+        $this->assertNotContains( 'ezoe', $required );
         $this->assertContains( 'ezjscore', $required );
     }
 

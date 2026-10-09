@@ -22,7 +22,7 @@ _To come with v1: the same article in ezoe (TinyMCE) and in Tiptap, the switch b
 
 ## Quick start
 
-1. ezoe and ezjscore active, exp_oe_tiptap after ezoe in `ActiveExtensions`:
+1. ezoe and ezjscore active, and exp_oe_tiptap added to `ActiveExtensions` (any place: it declares that it extends ezoe):
    ```ini
    [ExtensionSettings]
    ActiveExtensions[]=ezjscore

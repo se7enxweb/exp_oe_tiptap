@@ -45,7 +45,7 @@ exactly what TinyMCE writes.
 ## The input handler
 
 ezxmltext asks `ezxml.ini [InputSettings]` for its input handler: `HandlerClass=eZSimplifiedXMLInput`, replaced by
-`AliasClasses[eZSimplifiedXMLInput]`. ezoe sets that alias to `eZOEXMLInput`; exp_oe_tiptap, read after ezoe, sets
+`AliasClasses[eZSimplifiedXMLInput]`. ezoe sets that alias to `eZOEXMLInput`; exp_oe_tiptap, read after ezoe (its extension.xml declares `<extends>ezoe`), sets
 it to `expOETiptapXMLInput`. If that class refuses (`isValid()`, inherited from ezoe: no `ezoe/editor` policy,
 unsupported browser) the kernel falls back to the plain `eZSimplifiedXMLInput`, exactly as with ezoe.
 

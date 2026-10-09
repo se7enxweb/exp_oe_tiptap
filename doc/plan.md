@@ -35,8 +35,8 @@ Links: https://tiptap.dev/product/editor , https://tiptap.dev/product/ai-toolkit
    database, the output handlers or the templates that render content changes. The Tiptap schema mirrors the
    ezoe dialect 1:1 (Agent B, doc/content-mapping.md).
 2. **Input handler.** `expOETiptapXMLInput extends eZOEXMLInput`, registered in ezxml.ini
-   `[InputSettings] AliasClasses[eZSimplifiedXMLInput]=expOETiptapXMLInput`. Because exp_oe_tiptap comes after
-   ezoe in ActiveExtensions, this line wins over ezoe's own `AliasClasses[eZSimplifiedXMLInput]=eZOEXMLInput`.
+   `[InputSettings] AliasClasses[eZSimplifiedXMLInput]=expOETiptapXMLInput`. Because extension.xml declares that exp_oe_tiptap
+   extends ezoe, its settings are read after ezoe's whatever the order in ActiveExtensions, and this line wins over ezoe's own `AliasClasses[eZSimplifiedXMLInput]=eZOEXMLInput`.
    The subclass changes one thing: the edit template. `editTemplateSuffix()` returns `exp_oe_tiptap`, and
    `ezxmltext_exp_oe_tiptap.tpl` includes either ezoe's own `ezxmltext_ezoe.tpl` (unchanged, with its engine
    registry, TinyMCE 3 or 8) or the Tiptap template, followed by the switch button. Validation, parsing,

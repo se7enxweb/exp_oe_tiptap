@@ -54,7 +54,7 @@ commit. A pushed tag is never moved.
 | Symptom | Cause | Fix |
 | --- | --- | --- |
 | No switch button | `AllowSwitch=disabled`; user lacks `exp_oe_tiptap/switch`; bundle missing (the button to Tiptap is hidden then) | check the setting, the role, the file `design/standard/javascript/exp_oe_tiptap/exp_oe_tiptap.js` |
-| ezoe as before, no trace of exp_oe_tiptap | extension before ezoe in `ActiveExtensions`, so ezoe's alias wins; autoloads not regenerated; INI cache | order, `ezpgenerateautoloads.php -e`, `--clear-tag=ini`, reload PHP / restart Velocity |
+| ezoe as before, no trace of exp_oe_tiptap | `extension.xml` changed to `<requires>ezoe` instead of `<extends>ezoe`, so ezoe's settings are read last and its alias wins; autoloads not regenerated; INI cache | order, `ezpgenerateautoloads.php -e`, `--clear-tag=ini`, reload PHP / restart Velocity |
 | Empty text field area after activation | template override cache does not know the new templates | `--clear-id=template-override` |
 | Plain textarea with HTML in it instead of Tiptap | bundle not loaded (404, JS error) | browser console: "exp_oe_tiptap: the editor bundle is not loaded"; rebuild, check `Scripts[]`, check the design path |
 | Content changes after saving from Tiptap | a round-trip gap in the schema | switch the user back to ezoe; add the content as a fixture (see content-mapping.md) and fix the schema |

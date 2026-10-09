@@ -28,7 +28,9 @@
     <dependencies>
         <requires>
             <extension name="ezjscore" />
-            <extension name="ezoe" />
         </requires>
+        <extends>
+            <extension name="ezoe" />
+        </extends>
     </dependencies>
 </software>

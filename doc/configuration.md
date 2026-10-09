@@ -44,7 +44,7 @@ Read by the server function `expoetiptap::ai`; see [ai-hooks.md](ai-hooks.md) fo
 
 | File | Setting | Why |
 | --- | --- | --- |
-| `ezxml.ini` | `[InputSettings] AliasClasses[eZSimplifiedXMLInput]=expOETiptapXMLInput` | Makes the extension's input handler the one ezxmltext uses. Needs exp_oe_tiptap after ezoe in `ActiveExtensions`. |
+| `ezxml.ini` | `[InputSettings] AliasClasses[eZSimplifiedXMLInput]=expOETiptapXMLInput` | Makes the extension's input handler the one ezxmltext uses. Wins over ezoe's alias because extension.xml declares `<extends>ezoe`, which makes the settings load after ezoe's in any `ActiveExtensions` order. |
 | `design.ini` | `[ExtensionSettings] DesignExtensions[]=exp_oe_tiptap` | The templates, scripts and styles. |
 | `module.ini` | `ModuleList[]=exp_oe_tiptap` | The view `exp_oe_tiptap/switch` and the policy functions `switch`, `ai`. |
 | `site.ini` | `TranslationExtensions[]=exp_oe_tiptap`, `ModuleViewAccessMode[exp_oe_tiptap/*]=keep` | Translations (context `extension/exp_oe_tiptap`); no SSL zone change. |

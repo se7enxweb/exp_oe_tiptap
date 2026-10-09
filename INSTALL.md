@@ -21,10 +21,12 @@ composer require se7enxweb/exp_oe_tiptap
 
 Or copy (or clone) the extension to `extension/exp_oe_tiptap`.
 
-## 2. Activate it after ezoe
+## 2. Activate it
 
-The order matters: exp_oe_tiptap's `ezxml.ini` replaces ezoe's input handler alias, so it must be read after
-ezoe's. In `settings/override/site.ini.append.php`:
+exp_oe_tiptap's `ezxml.ini` replaces ezoe's input handler alias, so it must be read after
+ezoe's. `extension.xml` declares `<extends>ezoe` for this: the kernel orders the extensions by it, so the place in
+`ActiveExtensions` does not matter (with `<requires>` ezoe would be read last and win). In
+`settings/override/site.ini.append.php`:
 
 ```ini
 [ExtensionSettings]
