@@ -233,7 +233,7 @@
     </message>
     <message>
         <source>Default of this site (%editor)</source>
-        <translation>За замовчуванням для цього сайту (%editor)</translation>
+        <translation>Типовий для цього сайту (%editor)</translation>
     </message>
     <message>
         <source>Description</source>
