@@ -99,6 +99,39 @@ test( 'the floating menus offer only toolbar buttons, with their names, and run 
     assert.match( inst.getHTML(), /<strong>Hello<\/strong> world/ );
 } );
 
+test( 'the toolbar sticks below admin4\'s header and button bar, one sideways row on a phone, 44px targets for touch', () => {
+    const text = css( 'src/css/skin-a4.css' ).replace( /\/\*[\s\S]*?\*\//g, '' );
+    const toolbar = text.match( /\.exp-oe-tiptap\.exp-oe-skin-a4 \.exp-oe-toolbar \{([^}]*)\}/ )[1];
+    assert.match( toolbar, /position:\s*sticky/ );
+    assert.match( toolbar, /top:\s*var\(--a4-sticky-edge,\s*0px\)/, 'not top: 0, which slid under the fixed header and the button bar' );
+    assert.match( text, /\.exp-oe-fullscreen \.exp-oe-toolbar \{[^}]*top:\s*0;/, 'fullscreen covers the window: the toolbar starts at its top' );
+    const phone = text.match( /@media \(max-width: 40rem\) \{\s*\.exp-oe-tiptap\.exp-oe-skin-a4 \.exp-oe-toolbar \{([^}]*)\}/ );
+    assert.ok( phone, 'a phone rule for the toolbar' );
+    assert.match( phone[1], /flex-wrap:\s*nowrap/ );
+    assert.match( phone[1], /overflow-x:\s*auto/ );
+    assert.match( text, /@media \(max-width: 40rem\), \(pointer: coarse\) \{\s*\.exp-oe-tiptap\.exp-oe-skin-a4 \{ --a4-control-h: 44px; \}/ );
+    assert.match( text, /@media \(pointer: coarse\) \{\s*\.exp-oe-skin-a4 \.exp-oe-dialog :is\([^{]*select, textarea\) \{ font-size: var\(--a4-text-l, 16px\); \}/,
+                  'dialog fields at 16px on touch screens: the overlay is outside #page, where admin4\'s rule does not reach' );
+} );
+
+test( 'the bubble stays inside the text area when the selection ends at the right edge', () => {
+    const inst = X.init( textarea( '<p>Hello world</p>' ), Object.assign( {}, OPTIONS, { skin: 'a4' } ) );
+    const bubble = inst.wrapper.querySelector( '.exp-oe-bubble' );
+    const area = bubble.closest( '.exp-oe-floating' ).parentNode;
+    Object.defineProperty( area, 'clientWidth', { configurable: true, value: 330 } );
+    Object.defineProperty( bubble, 'offsetWidth', { configurable: true, value: 240 } );
+    const view = inst.editor.view;
+    view.coordsAtPos = () => ( { left: 300, right: 300, top: 100, bottom: 120 } );
+    inst.editor.commands.setTextSelection( { from: 7, to: 12 } );
+    inst.floating.update( true );
+    assert.equal( bubble.hidden, false );
+    assert.equal( bubble.style.left, '86px', '330 - 240 - 4: the last button (link) is not cut off' );
+    view.coordsAtPos = () => ( { left: 40, right: 40, top: 100, bottom: 120 } );
+    inst.editor.commands.setTextSelection( { from: 1, to: 6 } );
+    inst.floating.update( true );
+    assert.equal( bubble.style.left, '40px', 'at the selection where there is room' );
+} );
+
 /** Specificity of one simple selector as a comparable number (ids, classes/attributes/pseudo-classes, types) */
 function specificity( selector ) {
     const sel = selector.replace( /:not\(([^)]*)\)/g, ' $1' ).replace( /::[\w-]+/g, '' );

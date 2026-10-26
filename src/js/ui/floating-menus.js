@@ -243,7 +243,10 @@ export class FloatingMenus {
             const start = view.coordsAtPos( selection.from );
             const end = view.coordsAtPos( selection.to );
             this.bubble.hidden = false;
-            this.bubble.style.left = Math.max( 0, start.left - frame.left ) + 'px';
+            // at the selection, but never past the area's right edge: on a phone a selection at the line's end put
+            // the bubble's last button (link) outside the editor, where the area clips it
+            const maxLeft = area.scrollLeft + area.clientWidth - this.bubble.offsetWidth - 4;
+            this.bubble.style.left = Math.max( 0, Math.min( start.left - frame.left, maxLeft ) ) + 'px';
             // above the selection, or below it where the text area has no room above (first line)
             const above = start.top - frame.top - this.bubble.offsetHeight - 6;
             const areaTop = this.element.parentNode.scrollTop;

@@ -31,10 +31,12 @@
     box-shadow: 0 0 0 3px var(--a4-accent-soft, rgba(242, 106, 33, .18));
 }
 
-/* toolbar: flat, grouped, sticky above the text */
+/* toolbar: flat, grouped, sticky above the text. It sticks below admin4's fixed header and, on edit pages, below the
+   sticky button bar: --a4-sticky-edge (admin4.js) is where the visible page starts. With top: 0 it slid under both on
+   a phone (header 56px, button bar 62-170px), hiding the paragraph list, bold, italic and the alignment rows. */
 .exp-oe-tiptap.exp-oe-skin-a4 .exp-oe-toolbar {
     position: sticky;
-    top: 0;
+    top: var(--a4-sticky-edge, 0px);
     z-index: var(--a4-z-raised, 2);
     gap: 2px 4px;
     padding: 6px 8px;
@@ -246,6 +248,28 @@
 .exp-oe-tiptap.exp-oe-skin-a4 .exp-oe-content .exp-oe-search-current { background: var(--a4-accent-soft, rgba(242, 106, 33, .28)); outline: 2px solid var(--a4-accent, #f26a21); }
 @media (max-width: 40rem) {
     .exp-oe-tiptap.exp-oe-skin-a4 .exp-oe-search-label { min-width: 100%; }
+}
+
+/* fullscreen: the editor covers the window, its toolbar starts at the window's top */
+.exp-oe-tiptap.exp-oe-skin-a4.exp-oe-fullscreen .exp-oe-toolbar { top: 0; border-radius: 0; }
+
+/* Phones: the toolbar is one row that scrolls sideways instead of six or seven wrapped rows (249px of a 844px screen
+   at 390px, which with the header and the button bar left almost no text in view above the keyboard). The groups
+   keep their order; a thin scrollbar shows there is more. */
+@media (max-width: 40rem) {
+    .exp-oe-tiptap.exp-oe-skin-a4 .exp-oe-toolbar {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        overscroll-behavior-x: contain;
+        scrollbar-width: thin;
+    }
+    .exp-oe-tiptap.exp-oe-skin-a4 .exp-oe-toolbar > * { flex: none; }
+}
+
+/* Touch screens and phones: 44px targets (Apple's minimum) for the toolbar, the bubble and the "+" instead of 32px */
+@media (max-width: 40rem), (pointer: coarse) {
+    .exp-oe-tiptap.exp-oe-skin-a4 { --a4-control-h: 44px; }
+    .exp-oe-tiptap.exp-oe-skin-a4 .exp-oe-plus:not([hidden]) { width: 44px; height: 44px; }
 }
 @media (forced-colors: active) {
     .exp-oe-tiptap.exp-oe-skin-a4 .exp-oe-content .exp-oe-search-match { background: Mark; color: MarkText; forced-color-adjust: none; }
@@ -579,6 +603,12 @@ html[data-a4-theme="dark"] .exp-oe-dialog-overlay.exp-oe-skin-a4 { color-scheme:
 }
 
 /* Windows high contrast and other forced colors: the system draws the card, the fields and the buttons */
+/* Touch screens: fields with 16px text. Below that a phone's browser zooms in when a field gets the focus; admin4's
+   own rule for this covers #page only, and the dialog's overlay is a child of <body>. */
+@media (pointer: coarse) {
+    .exp-oe-skin-a4 .exp-oe-dialog :is(input:not([type="checkbox"]):not([type="radio"]):not([type="file"]), select, textarea) { font-size: var(--a4-text-l, 16px); }
+}
+
 @media (forced-colors: active) {
     .exp-oe-skin-a4 .exp-oe-dialog { border: 1px solid CanvasText; }
     .exp-oe-skin-a4 .exp-oe-dialog-button, .exp-oe-skin-a4 .exp-oe-dialog-close, .exp-oe-skin-a4 .exp-oe-tab, .exp-oe-skin-a4 .exp-oe-char { border: 1px solid ButtonText; }
