@@ -38,7 +38,7 @@ final class SettingsDefaultsTest extends TestCase
         $this->assertStringContainsString( "ezini_hasvariable( 'EditorSettings', 'DesignSkin', 'exp_oe_tiptap.ini' )", $tpl );
         $this->assertStringContainsString( '{if is_set( $design_skins[$site_design] )}', $tpl );
         $design = strpos( $tpl, '{set $tiptap_skin = $design_skins[$site_design]}' );
-        $skin = strpos( $tpl, "{set \$tiptap_skin = ezini( 'EditorSettings', 'Skin', 'exp_oe_tiptap.ini' )}" );
+        $skin = strpos( $tpl, "{set \$tiptap_skin = ezini( 'EditorSettings', 'Skin', 'exp_oe_tiptap.ini',, true() )}" );
         $this->assertNotFalse( $design );
         $this->assertNotFalse( $skin );
         $this->assertLessThan( $skin, $design, 'Skin is set after DesignSkin[], so it wins' );

@@ -58,10 +58,11 @@
     {/if}
 {/if}
 {* Nested, not and(): and() evaluates every parameter, so ezini() would still be asked for the undefined Skin and
-   log an error on every edit page. *}
+   log an error on every edit page. Dynamic (the last true()): the template compiler resolves a static ezini() when
+   it compiles the file, inside the if or not, and logged the undefined Skin then. *}
 {if ezini_hasvariable( 'EditorSettings', 'Skin', 'exp_oe_tiptap.ini' )}
-    {if ezini( 'EditorSettings', 'Skin', 'exp_oe_tiptap.ini' )|ne( '' )}
-        {set $tiptap_skin = ezini( 'EditorSettings', 'Skin', 'exp_oe_tiptap.ini' )}
+    {if ezini( 'EditorSettings', 'Skin', 'exp_oe_tiptap.ini',, true() )|ne( '' )}
+        {set $tiptap_skin = ezini( 'EditorSettings', 'Skin', 'exp_oe_tiptap.ini',, true() )}
     {/if}
 {/if}
 {foreach ezini( 'StylesheetSettings', 'EditorCSSFileList', 'design.ini',,true() ) as $css}
