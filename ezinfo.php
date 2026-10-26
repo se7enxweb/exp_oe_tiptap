@@ -17,7 +17,7 @@ class exp_oe_tiptapInfo
             'Info_url'  => 'https://github.com/se7enxweb/exp_oe_tiptap',
             'Includes the following third-party software' => array(
                 'Name'      => 'Tiptap',
-                'Version'   => '0.1.14',
+                'Version'   => '3.31.4',
                 'Copyright' => 'Copyright (C) 2025, Tiptap GmbH',
                 'License'   => 'MIT License',
                 'Info_url'  => 'https://tiptap.dev/',
