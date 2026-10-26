@@ -245,7 +245,7 @@
     </message>
     <message>
         <source>Discard draft</source>
-        <translation>Annuler le brouillon</translation>
+        <translation>Abandonner le brouillon</translation>
     </message>
     <message>
         <source>Drag to resize</source>
@@ -913,7 +913,7 @@
     </message>
     <message>
         <source>Try again</source>
-        <translation>Essayez encore</translation>
+        <translation>Réessayer</translation>
     </message>
     <message>
         <source>Turkish</source>
