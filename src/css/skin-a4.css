@@ -96,7 +96,7 @@
     background-color: var(--exp-oe-content-bg);
     color: var(--exp-oe-text);
     font: inherit;
-    font-weight: 500;
+    font-weight: var(--a4-weight-medium, 500);
     cursor: pointer;
 }
 .exp-oe-tiptap.exp-oe-skin-a4 .exp-oe-listbox:hover, .exp-oe-tiptap.exp-oe-skin-a4 .exp-oe-listbox:focus { background-color: var(--exp-oe-hover); }
@@ -107,7 +107,7 @@
 .exp-oe-tiptap.exp-oe-skin-a4 .exp-oe-content {
     padding: 16px 20px 16px 44px;
     color: var(--exp-oe-text);
-    font: var(--a4-text-l, 16px)/1.6 var(--a4-font, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif);
+    font: var(--a4-text-l, 16px)/var(--a4-leading, 1.6) var(--a4-font, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif);
     caret-color: var(--a4-accent, #f26a21);
 }
 .exp-oe-tiptap.exp-oe-skin-a4 .exp-oe-content p { margin: 0 0 .75em; }
@@ -115,7 +115,7 @@
 .exp-oe-tiptap.exp-oe-skin-a4 .exp-oe-content h4, .exp-oe-tiptap.exp-oe-skin-a4 .exp-oe-content h5, .exp-oe-tiptap.exp-oe-skin-a4 .exp-oe-content h6 {
     margin: 1.2em 0 .4em;
     line-height: 1.2;
-    font-weight: 650;
+    font-weight: var(--a4-weight-heading, 650);
     text-wrap: pretty;
 }
 .exp-oe-tiptap.exp-oe-skin-a4 .exp-oe-content h1 { font-size: 1.6em; }
@@ -131,14 +131,14 @@
     border-radius: var(--exp-oe-a4-radius);
     background: var(--a4-code-bg, #f6f8fa);
     color: var(--a4-code-ink, #1f2328);
-    font: .875em/1.5 var(--a4-mono, ui-monospace, SFMono-Regular, Menlo, monospace);
+    font: .875em/var(--a4-leading, 1.5) var(--a4-mono, ui-monospace, SFMono-Regular, Menlo, monospace);
 }
 .exp-oe-tiptap.exp-oe-skin-a4 .exp-oe-content table { border-collapse: collapse; margin: .5em 0 1em; }
 .exp-oe-tiptap.exp-oe-skin-a4 .exp-oe-content td, .exp-oe-tiptap.exp-oe-skin-a4 .exp-oe-content th {
     border: 1px solid var(--exp-oe-border);
     padding: 6px 10px;
 }
-.exp-oe-tiptap.exp-oe-skin-a4 .exp-oe-content th { background: var(--exp-oe-hover); font-weight: 600; }
+.exp-oe-tiptap.exp-oe-skin-a4 .exp-oe-content th { background: var(--exp-oe-hover); font-weight: var(--a4-weight-strong, 600); }
 .exp-oe-tiptap.exp-oe-skin-a4 .exp-oe-content .selectedCell { background: var(--a4-accent-soft, #fff1e8); }
 .exp-oe-tiptap.exp-oe-skin-a4 .exp-oe-content .ezoeItemNonEditable {
     outline: 1px dashed var(--exp-oe-border);
@@ -167,7 +167,7 @@
     line-height: 16px;
     border-radius: 0 0 var(--exp-oe-a4-radius) var(--exp-oe-a4-radius);
 }
-.exp-oe-tiptap.exp-oe-skin-a4 .exp-oe-path-label { font-weight: 600; }
+.exp-oe-tiptap.exp-oe-skin-a4 .exp-oe-path-label { font-weight: var(--a4-weight-strong, 600); }
 .exp-oe-tiptap.exp-oe-skin-a4 .exp-oe-path a { padding: 0 2px; color: var(--exp-oe-muted); text-decoration: none; }
 .exp-oe-tiptap.exp-oe-skin-a4 .exp-oe-path a:hover { background: var(--exp-oe-hover); color: var(--exp-oe-text); text-decoration: underline; }
 
@@ -217,7 +217,7 @@
     font: var(--a4-text-s, 13px) var(--a4-font, system-ui, sans-serif);
 }
 .exp-oe-tiptap.exp-oe-skin-a4 .exp-oe-search-row { gap: 6px; padding: 2px 0; }
-.exp-oe-tiptap.exp-oe-skin-a4 .exp-oe-search-label { min-width: 7.5em; font-weight: 600; }
+.exp-oe-tiptap.exp-oe-skin-a4 .exp-oe-search-label { min-width: 7.5em; font-weight: var(--a4-weight-strong, 600); }
 .exp-oe-tiptap.exp-oe-skin-a4 :is(.exp-oe-search-find, .exp-oe-search-replace) {
     height: var(--a4-control-h, 32px);
     padding: 0 10px;
@@ -236,7 +236,7 @@
     background: var(--a4-card, #fff);
     color: var(--exp-oe-text);
     font: inherit;
-    font-weight: 600;
+    font-weight: var(--a4-weight-strong, 600);
 }
 .exp-oe-tiptap.exp-oe-skin-a4 .exp-oe-search-button:hover:not([disabled]) { border-color: var(--a4-accent, #f26a21); color: var(--a4-accent-text, #c2410c); }
 .exp-oe-tiptap.exp-oe-skin-a4 .exp-oe-search-button:focus-visible { outline: 3px solid var(--a4-ring, rgba(242, 106, 33, .55)); outline-offset: 2px; }
@@ -334,7 +334,7 @@ html[data-a4-theme="dark"] .exp-oe-dialog-overlay.exp-oe-skin-a4 { color-scheme:
 .exp-oe-skin-a4 .exp-oe-dialog-heading {
     margin: 2px 0 0;
     font-size: var(--a4-text-l, 16px);
-    font-weight: 650;
+    font-weight: var(--a4-weight-heading, 650);
     line-height: 1.3;
     text-wrap: balance;
 }
@@ -418,7 +418,7 @@ html[data-a4-theme="dark"] .exp-oe-dialog-overlay.exp-oe-skin-a4 { color-scheme:
     border-radius: var(--exp-oe-a4-radius);
     background: var(--a4-card, #fff);
     color: var(--a4-ink, #1f2430);
-    font: 600 var(--a4-text-s, 13px)/1.2 var(--a4-font, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif);
+    font: var(--a4-weight-strong, 600) var(--a4-text-s, 13px)/var(--a4-leading-tight, 1.2) var(--a4-font, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif);
     white-space: nowrap;
 }
 .exp-oe-skin-a4 .exp-oe-dialog-button:hover:not([disabled]) { border-color: var(--a4-accent, #f26a21); color: var(--a4-accent-text, #c2410c); }
@@ -443,12 +443,12 @@ html[data-a4-theme="dark"] .exp-oe-dialog-overlay.exp-oe-skin-a4 { color-scheme:
     gap: 6px;
     margin: 0 0 14px;
 }
-.exp-oe-skin-a4 .exp-oe-field > label { display: block; margin: 0; padding: 0; color: inherit; font-size: var(--a4-text-s, 13px); font-weight: 600; text-align: start; }
+.exp-oe-skin-a4 .exp-oe-field > label { display: block; margin: 0; padding: 0; color: inherit; font-size: var(--a4-text-s, 13px); font-weight: var(--a4-weight-strong, 600); text-align: start; }
 .exp-oe-skin-a4 .exp-oe-required { color: var(--a4-bad, #b91c1c); }
 .exp-oe-skin-a4 .exp-oe-hint { margin-top: -2px; color: var(--a4-muted, #5d6573); font-size: var(--a4-text-xs, 12px); }
 .exp-oe-skin-a4 .exp-oe-field-check { display: grid; grid-template-columns: auto 1fr; align-items: center; gap: 4px 10px; }
 .exp-oe-skin-a4 .exp-oe-field-check > input { grid-row: 1; grid-column: 1; }
-.exp-oe-skin-a4 .exp-oe-field-check > label { grid-row: 1; grid-column: 2; font-weight: 500; }
+.exp-oe-skin-a4 .exp-oe-field-check > label { grid-row: 1; grid-column: 2; font-weight: var(--a4-weight-medium, 500); }
 .exp-oe-skin-a4 .exp-oe-field-check > .exp-oe-hint { grid-column: 2; }
 .exp-oe-skin-a4 .exp-oe-dialog :is(input:not([type="checkbox"]):not([type="radio"]):not([type="file"]), select, textarea) {
     box-sizing: border-box;
@@ -459,7 +459,7 @@ html[data-a4-theme="dark"] .exp-oe-dialog-overlay.exp-oe-skin-a4 { color-scheme:
     border-radius: var(--exp-oe-a4-radius);
     background-color: var(--a4-field, #fff);
     color: var(--a4-ink, #1f2430);
-    font: var(--a4-text-m, 14px)/1.4 var(--a4-font, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif);
+    font: var(--a4-text-m, 14px)/var(--a4-leading, 1.4) var(--a4-font, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif);
 }
 .exp-oe-skin-a4 .exp-oe-dialog :is(input, select, textarea):focus-visible { outline: 3px solid var(--a4-ring, rgba(242, 106, 33, .55)); outline-offset: 0; border-color: var(--a4-accent, #f26a21); }
 .exp-oe-skin-a4 .exp-oe-dialog :is(input, select, textarea):disabled { opacity: .6; }
@@ -481,8 +481,8 @@ html[data-a4-theme="dark"] .exp-oe-dialog-overlay.exp-oe-skin-a4 { color-scheme:
     padding: 0 8px 0 0;
     color: var(--a4-muted, #5d6573);
     font-size: var(--a4-text-xs, 12px);
-    font-weight: 600;
-    letter-spacing: .04em;
+    font-weight: var(--a4-weight-strong, 600);
+    letter-spacing: var(--a4-tracking, .04em);
     text-transform: uppercase;
 }
 .exp-oe-skin-a4 .exp-oe-link-picker, .exp-oe-skin-a4 .exp-oe-embed-upload {
@@ -497,7 +497,7 @@ html[data-a4-theme="dark"] .exp-oe-dialog-overlay.exp-oe-skin-a4 { color-scheme:
     padding: 8px 0;
     color: var(--a4-ink, #1f2430);
     font-size: var(--a4-text-s, 13px);
-    font-weight: 600;
+    font-weight: var(--a4-weight-strong, 600);
 }
 .exp-oe-skin-a4 .exp-oe-embed-upload .exp-oe-dialog-button { margin: 0 0 6px; }
 .exp-oe-skin-a4 .exp-oe-embed-chosen {
@@ -523,7 +523,7 @@ html[data-a4-theme="dark"] .exp-oe-dialog-overlay.exp-oe-skin-a4 { color-scheme:
     border-radius: var(--exp-oe-a4-radius);
     background: transparent;
     color: var(--a4-muted, #5d6573);
-    font: 600 var(--a4-text-s, 13px) var(--a4-font, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif);
+    font: var(--a4-weight-strong, 600) var(--a4-text-s, 13px) var(--a4-font, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif);
 }
 .exp-oe-skin-a4 .exp-oe-tab[aria-selected="true"] { background: var(--a4-card, #fff); color: var(--a4-ink, #1f2430); box-shadow: var(--a4-shadow-s, 0 1px 2px rgba(16, 24, 40, .04)), 0 0 0 1px var(--a4-line, #e3e6eb); }
 .exp-oe-skin-a4 .exp-oe-picker { margin: 0 0 12px; }
@@ -555,7 +555,7 @@ html[data-a4-theme="dark"] .exp-oe-dialog-overlay.exp-oe-skin-a4 { color-scheme:
 .exp-oe-skin-a4 .exp-oe-dialog.exp-oe-help { width: 44rem; }
 .exp-oe-skin-a4 .exp-oe-dialog.exp-oe-source { width: 48rem; }
 /* the source: monospaced; :is() as the field rule above, which would win otherwise */
-.exp-oe-skin-a4 .exp-oe-dialog.exp-oe-source :is(textarea.exp-oe-source-view, input:not([type="checkbox"]):not([type="radio"]):not([type="file"])) { min-height: 22rem; font: var(--a4-text-xs, 12px)/1.6 var(--a4-mono, ui-monospace, SFMono-Regular, Menlo, monospace); background: var(--a4-code-bg, #f6f7f9); color: var(--a4-code-ink, var(--a4-ink, #1f2430)); white-space: pre; }
+.exp-oe-skin-a4 .exp-oe-dialog.exp-oe-source :is(textarea.exp-oe-source-view, input:not([type="checkbox"]):not([type="radio"]):not([type="file"])) { min-height: 22rem; font: var(--a4-text-xs, 12px)/var(--a4-leading, 1.6) var(--a4-mono, ui-monospace, SFMono-Regular, Menlo, monospace); background: var(--a4-code-bg, #f6f7f9); color: var(--a4-code-ink, var(--a4-ink, #1f2430)); white-space: pre; }
 /* same weight as the rule above (its :is() counts as its heaviest part), one class more */
 .exp-oe-skin-a4 .exp-oe-dialog.exp-oe-source :is(textarea.exp-oe-source-view, input:not([type="checkbox"]):not([type="radio"]):not([type="file"])).exp-oe-source-wrapped { white-space: pre-wrap; overflow-wrap: anywhere; }
 .exp-oe-skin-a4 .exp-oe-dialog.exp-oe-source :is(textarea.exp-oe-source-view, input:not([type="checkbox"]):not([type="radio"]):not([type="file"])):read-only { background: var(--a4-soft, #f6f7f9); }
@@ -569,18 +569,18 @@ html[data-a4-theme="dark"] .exp-oe-dialog-overlay.exp-oe-skin-a4 { color-scheme:
     color: var(--a4-ink, #1f2430);
     font-size: var(--a4-text-s, 13px);
 }
-.exp-oe-skin-a4 .exp-oe-source-warning > p:first-child { margin: 0 0 6px; font-weight: 600; color: var(--a4-warn, #8a4b00); }
+.exp-oe-skin-a4 .exp-oe-source-warning > p:first-child { margin: 0 0 6px; font-weight: var(--a4-weight-strong, 600); color: var(--a4-warn, #8a4b00); }
 .exp-oe-skin-a4 .exp-oe-source-warning > p:last-child { margin: 6px 0 0; color: var(--a4-muted, #5d6573); }
 .exp-oe-skin-a4 .exp-oe-source-warning ul { margin: 0; padding-left: 1.2em; max-height: 10rem; overflow: auto; font-family: var(--a4-mono, ui-monospace, SFMono-Regular, Menlo, monospace); font-size: var(--a4-text-xs, 12px); }
 .exp-oe-skin-a4 .exp-oe-source-warning[hidden] { display: none; }
-.exp-oe-skin-a4 .exp-oe-help-table:not(.exp-oe-help-keys) tbody th { width: 32%; font: 600 var(--a4-text-s, 13px)/1.5 var(--a4-font, system-ui, sans-serif); }
+.exp-oe-skin-a4 .exp-oe-help-table:not(.exp-oe-help-keys) tbody th { width: 32%; font: var(--a4-weight-strong, 600) var(--a4-text-s, 13px)/var(--a4-leading, 1.5) var(--a4-font, system-ui, sans-serif); }
 .exp-oe-skin-a4 .exp-oe-help-table th > .exp-oe-icon { display: inline-block; margin-right: 8px; vertical-align: -3px; }
-.exp-oe-skin-a4 .exp-oe-help-table thead th { font: 600 var(--a4-text-xs, 12px)/1.6 var(--a4-font, system-ui, sans-serif); color: var(--a4-muted, #5d6573); }
+.exp-oe-skin-a4 .exp-oe-help-table thead th { font: var(--a4-weight-strong, 600) var(--a4-text-xs, 12px)/var(--a4-leading, 1.6) var(--a4-font, system-ui, sans-serif); color: var(--a4-muted, #5d6573); }
 .exp-oe-skin-a4 .exp-oe-help-panel p { margin: 0 0 8px; }
 .exp-oe-skin-a4 .exp-oe-help-tips { margin: 0; padding-left: 1.2em; }
 .exp-oe-skin-a4 .exp-oe-help-tips li { margin: 0 0 6px; }
 .exp-oe-skin-a4 .exp-oe-help-panel:focus-visible { outline: 3px solid var(--a4-ring, rgba(242, 106, 33, .55)); outline-offset: 2px; }
-.exp-oe-skin-a4 .exp-oe-shortcuts th { padding-right: 16px; font: 500 var(--a4-text-xs, 12px)/1.6 var(--a4-mono, ui-monospace, SFMono-Regular, Menlo, monospace); }
+.exp-oe-skin-a4 .exp-oe-shortcuts th { padding-right: 16px; font: var(--a4-weight-medium, 500) var(--a4-text-xs, 12px)/var(--a4-leading, 1.6) var(--a4-mono, ui-monospace, SFMono-Regular, Menlo, monospace); }
 
 /* a phone: the whole width, a sheet at the bottom */
 @media (max-width: 40rem) {

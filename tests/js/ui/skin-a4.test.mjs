@@ -274,6 +274,8 @@ test( 'the a4 skin takes its radius, stacking, control height and type sizes fro
         assert.match( m[1], /^var\(--a4-z-[a-z-]+, \d+\)$/, 'a stacking layer token: ' + m[1] );
     for ( const m of text.matchAll( /(?:^|[;{\s])(?:width|height):\s*32px/g ) )
         assert.fail( 'the control height is --a4-control-h: ' + m[0] );
+    for ( const m of text.matchAll( /font-weight:\s*(\d+|bold)\b/g ) )
+        assert.fail( 'a weight token (--a4-weight-*), not ' + m[1] );
     for ( const m of text.matchAll( /font(?:-size)?:\s*(\d+px)/g ) )
         assert.fail( 'a type size token, not ' + m[1] );
 } );
@@ -289,7 +291,7 @@ test( 'the a4 status bar uses admin4\'s type: the editor\'s font, --a4-text-xs, 
     assert.match( bar, /font: inherit;/, 'the editor\'s font (--a4-font), not the o2k7 MS Sans Serif' );
     assert.match( bar, /font-size: var\(--a4-text-xs, 12px\);/ );
     assert.match( bar, /padding: 0 0 0 var\(--a4-space-2, 8px\);/ );
-    assert.match( rule( '.exp-oe-tiptap.exp-oe-skin-a4 .exp-oe-path-label' ), /font-weight: 600;/ );
+    assert.match( rule( '.exp-oe-tiptap.exp-oe-skin-a4 .exp-oe-path-label' ), /font-weight: var\(--a4-weight-strong, 600\);/ );
     assert.match( rule( '.exp-oe-tiptap.exp-oe-skin-a4 .exp-oe-path a' ), /text-decoration: none;/ );
     assert.match( rule( '.exp-oe-tiptap.exp-oe-skin-a4 .exp-oe-path a:hover' ), /text-decoration: underline;/ );
 } );
