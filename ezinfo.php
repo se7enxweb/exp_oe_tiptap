@@ -10,7 +10,7 @@ class exp_oe_tiptapInfo
     {
         return array(
             'Name'      => 'Exponential Online Editor Tiptap',
-            'Version'   => "0.1.17",
+            'Version'   => "0.1.18",
             'Author'    => '7x',
             'Copyright' => "Copyright (C) 1998 - 2026 Exponential Foundation and 7x. All rights reserved.",
             'License'   => "GNU General Public License v2.0 (or any later version)",
