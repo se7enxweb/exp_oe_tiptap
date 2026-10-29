@@ -12,7 +12,7 @@
  * Included more than once on a page (the template may include it once per editor), the file defines nothing again
  * and only starts the editors that have not started yet.
  *
- * @copyright Copyright (C) 1998 - 2026 7x & Exponential Foundation. All rights reserved.
+ * @copyright Copyright (C) 1998 - 2026 Exponential Foundation and 7x. All rights reserved.
  * @license GNU General Public License v2.0 (or any later version)
  */
 ( function( window, document )

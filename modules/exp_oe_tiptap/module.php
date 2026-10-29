@@ -2,7 +2,7 @@
 /**
  * Module exp_oe_tiptap: the switch view of 0.1.0 (now stored as ezoe's editor choice) and the policy functions.
  *
- * @copyright Copyright (C) 1998 - 2026 7x & Exponential Foundation. All rights reserved.
+ * @copyright Copyright (C) 1998 - 2026 Exponential Foundation and 7x. All rights reserved.
  * @license GNU General Public License v2.0 (or any later version)
  * @package exp_oe_tiptap
  */

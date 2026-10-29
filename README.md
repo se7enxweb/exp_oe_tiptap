@@ -64,6 +64,6 @@ Full instructions: [INSTALL.md](INSTALL.md).
 
 ## Licence
 
-GNU General Public License v2.0 (or any later version). Copyright (C) 1998 - 2026 7x & Exponential Foundation.
+GNU General Public License v2.0 (or any later version). Copyright (C) 1998 - 2026 Exponential Foundation and 7x. All rights reserved.
 
 Includes Tiptap and ProseMirror (MIT License) in the built bundle. Tiptap's paid Pro extensions are not used.

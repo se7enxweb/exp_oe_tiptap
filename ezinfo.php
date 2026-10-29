@@ -12,7 +12,7 @@ class exp_oe_tiptapInfo
             'Name'      => 'Exponential Online Editor Tiptap',
             'Version'   => "0.1.17",
             'Author'    => '7x',
-            'Copyright' => "Copyright (C) 1998 - 2026 7x & Exponential Foundation. All rights reserved.",
+            'Copyright' => "Copyright (C) 1998 - 2026 Exponential Foundation and 7x. All rights reserved.",
             'License'   => "GNU General Public License v2.0 (or any later version)",
             'Info_url'  => 'https://github.com/se7enxweb/exp_oe_tiptap',
             'Includes the following third-party software' => array(

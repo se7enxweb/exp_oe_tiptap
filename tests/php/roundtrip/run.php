@@ -16,7 +16,7 @@
  *
  * Writes report.json and report.md to EXPOETIPTAP_TIPTAP_DIR; exits 1 when Tiptap loses anything ezoe keeps.
  *
- * @copyright Copyright (C) 1998 - 2026 7x & Exponential Foundation
+ * @copyright Copyright (C) 1998 - 2026 Exponential Foundation and 7x. All rights reserved.
  * @license GNU General Public License v2.0 (or any later version)
  * @package exp_oe_tiptap
  */

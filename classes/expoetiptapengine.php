@@ -8,7 +8,7 @@
  * editor is rendered by ezxmltext_exp_oe_tiptap_editor.tpl, which ezoe's ezxmltext_ezoe.tpl includes; its settings
  * are the engine's config (expOETiptapEditor::editorInfo()).
  *
- * @copyright Copyright (C) 1998 - 2026 7x & Exponential Foundation. All rights reserved.
+ * @copyright Copyright (C) 1998 - 2026 Exponential Foundation and 7x. All rights reserved.
  * @license GNU General Public License v2.0 (or any later version)
  * @package exp_oe_tiptap
  */

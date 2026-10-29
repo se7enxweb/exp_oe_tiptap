@@ -48,7 +48,7 @@ final class ExtensionMetadataTest extends TestCase
         $info = exp_oe_tiptapInfo::info();
         $this->assertSame( 'GNU General Public License v2.0 (or any later version)', $info['License'] );
         $this->assertSame( 'https://github.com/se7enxweb/exp_oe_tiptap', $info['Info_url'] );
-        $this->assertStringContainsString( '7x & Exponential Foundation', $info['Copyright'] );
+        $this->assertStringContainsString( 'Exponential Foundation and 7x', $info['Copyright'] );
         $this->assertStringNotContainsString( 'eZ Publish', $info['Name'] );
     }
 

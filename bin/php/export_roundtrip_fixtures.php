@@ -27,7 +27,7 @@
  *   php extension/exp_oe_tiptap/bin/php/export_roundtrip_fixtures.php -s <admin siteaccess> --out=/tmp/rt \
  *       --class=article --limit=100 --offset=200
  *
- * @copyright Copyright (C) 1998 - 2026 7x & Exponential Foundation. All rights reserved.
+ * @copyright Copyright (C) 1998 - 2026 Exponential Foundation and 7x. All rights reserved.
  * @license GNU General Public License v2.0 (or any later version)
  * @package exp_oe_tiptap
  */

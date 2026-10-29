@@ -10,7 +10,7 @@
  * the database: useSandbox() switches the kernel to it (an SQLite file, or a MySQL database named *_sandbox or *_rt
  * that is no siteaccess's Database and carries the marker table exp_oe_tiptap_sandbox) and refuses anything else.
  *
- * @copyright Copyright (C) 1998 - 2026 7x & Exponential Foundation
+ * @copyright Copyright (C) 1998 - 2026 Exponential Foundation and 7x. All rights reserved.
  * @license GNU General Public License v2.0 (or any later version)
  * @package exp_oe_tiptap
  */
